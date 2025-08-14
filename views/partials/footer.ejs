@@ -1,0 +1,42 @@
+
+
+<footer class="text-dark py-4" style="background-color: #f8f9fa; font-size: 0.9em; width: 100vw; margin-left: calc(-50vw + 50%); padding: 60px 0;">
+  <div class="container text-center">
+    <p class="mb-1 fw-bold" style="font-size: 20px;">Contact Us:</p>
+
+    <p class="mb-1">
+      <strong>Call:</strong>
+      <a href="tel:8014710590" class="text-dark text-decoration-none">(801)-471-0590</a>
+    </p>
+
+    <p class="mb-1">
+      <strong>Email:</strong>
+      <a href="mailto:alswindows1@gmail.com" class="text-dark text-decoration-none">alswindows1@gmail.com</a>
+    </p>
+
+    <p class="mb-1">
+      <strong>Locations:</strong> Utah County, Wasatch County, & Salt Lake County
+    </p>
+
+    <p class="mb-1">
+      <strong>Hours:</strong> Mon–Sat, 9–5pm
+    </p>
+
+    <p class="mb-2">
+      <a href="https://www.instagram.com/alswindows/" target="_blank" class="text-dark text-decoration-none">
+        <i class="fab fa-instagram"></i> Follow us on Instagram
+      </a>
+    </p>
+
+    <!-- Security-based navigation -->
+    <% if (security === true) { %>
+      <p class="mb-1"><a class="text-dark text-decoration-none" href="/customerManagement">Customers</a></p>
+      <p class="mb-1"><a class="text-dark text-decoration-none" href="/leadManagement">Leads</a></p>
+      <p class="mb-1"><a class="text-dark text-decoration-none" href="/">Logout</a></p>
+    <% } else { %>
+      <p class="mb-1"><a class="text-dark text-decoration-none" href="/login">Employee Login</a></p>
+    <% } %>
+
+    <p class="small text-muted mb-0">&copy; 2025 Al's Windows. All rights reserved.</p>
+  </div>
+</footer>

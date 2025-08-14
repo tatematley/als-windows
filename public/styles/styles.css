@@ -1,0 +1,555 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@400;600;700;800&display=swap');
+
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+.banner {
+position: relative;
+width: 100%;
+height: 600px;
+background-image: url('/AlBanner.jpeg');
+background-size: cover;
+background-position: center 35%;
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: left;
+color: white;
+}
+
+
+.btn-quote {
+  background-color: #0047AB;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 10px 24px;
+  border: none;
+  margin-left: 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  cursor: default;
+}
+
+.btn-quote:hover {
+  background-color: #003b93;
+  transform: scale(1.05);
+}
+
+.btn-quote-ban {
+  background-color: #0047AB;
+  color: white;
+  font-weight: 600;
+  font-size: 2rem;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.btn-quote-ban:hover {
+  background-color: #003b93;
+  transform: scale(1.05);
+}
+
+.banner2 {
+  position: relative;
+  width: 100%;
+  height: 700px;
+  background-image: url('/Alex_Max.jpeg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  color: white;
+  overflow: hidden;
+  }
+
+/* Overlay wrapper for sliding form */
+#quoteFormWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 999;
+}
+
+/* Active state when triggered */
+#quoteFormWrapper.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Form slide-down animation */
+#quoteForm {
+    margin-top: -100vh;
+    background: rgb(255, 255, 255);
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    transition: margin-top 0.4s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #052e6c;
+}
+
+/* Slide into view */
+#quoteFormWrapper.active #quoteForm {
+    margin-top: 100px;
+}
+
+/* Close button styling */
+#closeForm {
+    float: right;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #666;
+    cursor: default;
+    margin-bottom: 10px;
+}
+
+        .quoteform fieldset {
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .quoteform .leadlegend {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            padding: 0 10px;
+            text-align: center;
+        }
+
+        .quoteform label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .quoteform input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .quoteform select {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: #052e6c;
+        }
+
+        .quoteform textarea {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .quoteform input:focus {
+            outline: none;
+            border-color: #1F5476;
+            box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+        }
+
+        .quoteform select:focus {
+            outline: none;
+            border-color: #1F5476;
+            box-shadow: 0 0 4px rgba(0, 123, 255, 0.5); 
+        }
+
+        .quoteform textarea:focus {
+            outline: none;
+            border-color: #1F5476;
+            box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+        }
+
+
+        .quoteform button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #003b93;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: default;
+            transition: background-color 0.3s ease;
+        }
+
+        .quoteform button:hover {
+            background-color: #003b93;
+            transform: scale(1.05);
+        }
+
+
+.banner::before {
+  position:absolute;
+  top: 30%;
+  left: 50%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('/logoTransparent.png'); 
+  z-index: 3;
+}
+
+.banner::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(28, 28, 28, 0.5);
+z-index: 1;
+}
+  .banner h1,
+  .banner h2 {
+    position: relative;
+    z-index: 2;
+  }
+
+.text-center {
+  text-align: center;
+}
+
+.fw-bold {
+  font-weight: bold;
+}
+
+.text-muted {
+  color: #6c757d;
+}
+
+.lead {
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: #052e6c;
+}
+
+
+/* new font */
+h1, h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+h3, h4, h5 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}
+
+p, li, span {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+}
+
+
+
+
+/* Section for equipment */
+.equipment-section {
+  margin-top: 50px;
+}
+
+.equipment-section h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.equipment-section h3 {
+  font-size: 1.8rem;
+  margin-top: 20px;
+  font-weight: 500;
+  color: #052e6c;
+}
+
+.equipment-section p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #052e6c;
+}
+
+/* Layout for the images - side by side */
+.equipment-images {
+  display: flex;
+  justify-content: space-between; /* Reduced the space between images */
+  gap: 15px; /* Reduced the gap */
+}
+
+.equipment-images img {
+  width: 350px; /* Increased width for larger images */
+  height: 350px; /* Increased height to maintain square shape */
+  object-fit: cover; /* Crop the image to fill the container */
+  object-position: top; /* Focus on the top portion of the image */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .equipment-images {
+      flex-direction: column; /* Stack images vertically on smaller screens */
+      align-items: center;
+  }
+
+  .equipment-images img {
+      width: 80%; /* Allow images to take up more space in smaller viewports */
+      height: auto; /* Let the images adjust based on their original aspect ratio */
+  }
+}
+
+.card2 {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  height: 80px;              /* Controls how short it is */
+  background-color: #ccc;     /* Helps you see if the card is actually rendering */
+}
+
+
+.card2 img:first-of-type {
+  top: 0;
+  left: 0;
+  height: 350px;
+  width: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.card2 .card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: white;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+}
+
+
+
+.card2 .overlay-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 1;
+}
+
+
+.card2:hover .hover-overlay {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Hover Overlay Base */
+.hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(9, 45, 89, 0.9); /* dark tint */
+  backdrop-filter: blur(1px);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  overflow: hidden;
+}
+
+/* Overlay Text Styling */
+.hover-overlay .text-wrap {
+  color: white;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  font-size: 1.6rem;
+  line-height: 1.5;
+  padding: 0 1rem;
+  z-index: 2;
+}
+
+/* Spray texture layer */
+/* .hover-overlay::before {
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  background-image: url('/WindowSpray.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.3;
+  z-index: -1;
+} */
+
+/* Bottom gradient fade (optional) */
+.hover-overlay::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+  z-index: -1;
+}
+
+
+@media (max-width: 576px) {
+  .container {
+      margin: 0 15px; /* Adjust padding for smaller screens */
+  }
+}
+.card-img-top {
+  object-fit: contain; /* Ensures the whole image fits */
+  width: 100%; /* Ensures it spans the card width */
+  height: auto; /* Keeps the aspect ratio */
+}
+
+/* plan styling */
+
+.flip-card-background {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background-color: #e6f0fb;
+  padding: 60px 0;
+}
+
+.flip-card {
+  background-color: transparent;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.flip-card-front {
+  background-color: #f8f9fa;
+}
+
+.flip-card-back {
+  background-color: #ffffff;
+  transform: rotateY(180deg);
+}
+
+.card-title {
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.card-content {
+  text-align: center;
+}
+
+
+/* home page google reviews place holder */
+.grbanner-image {
+  width: 100vw;         /* full viewport width */
+  height: 400px;
+  overflow: hidden;
+  border-radius: 0;     /* Remove if you want no rounded corners */
+  margin: 0;            /* Remove side margins */
+  position: relative;   /* Good for overlays/positioning */
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;   /* "Pulls" container to full width */
+  margin-right: -50vw;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+
+.grbanner-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;        /* Ensures the image fills area */
+  object-position: 20% 26%;  /* Default is center */
+  display: block;
+  opacity: .7;
+}
+
+
+@media (max-width: 600px) {
+  .grbanner-image {
+    height: 70px;
+  }
+}

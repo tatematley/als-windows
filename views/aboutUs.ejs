@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/styles.css">
+
+    <style>
+        .emp_container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            width: 350px;
+            height: 350px;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .text {
+        padding-left: 20px;
+        }
+
+        .card {
+        padding: 20px;
+        border-radius: 0px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-overlay-container {
+        position: relative;
+        width: 100%;
+        height: 290px;
+        overflow: hidden;
+        }
+
+        .overlay-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        }
+
+        .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(134, 134, 134, 0.3); /* adjust opacity and color here */
+        z-index: 1;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Nav Bar -->
+    <%- include('partials/navbar', { page: 'about', security: security  }) %>
+    <!-- <header> -->
+        
+
+    <div id="quoteFormWrapper">
+        <div id="quoteForm" class="quoteform">
+            <button id="closeForm">&times;</button>
+            <form action="/leads" method="POST">
+                <fieldset>
+                    <legend class="leadlegend" style="color: #052e6c;">Request a Quote</legend>
+                
+                    <label for="lead_first_name">First Name:</label>
+                    <input type="text" id="lead_first_name" name="lead_first_name" required>
+                    <br>
+
+                    <label for="lead_last_name">Last Name:</label>
+                    <input type="text" id="lead_last_name" name="lead_last_name" required>
+                    <br>
+
+                    <label for="lead_phone">Phone Number:</label>
+                    <input type="tel" id="lead_phone" name="lead_phone" placeholder="(123) 456-7890" pattern="^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$"  required>
+                    <br>
+
+                    <label for="lead_email">Email Address:</label>
+                    <input type="email" id="lead_email" name="lead_email">
+                    <br>
+
+                    <label for="type_of_service">Type of Service:</label>
+                    <select id="type_of_service" name="type_of_service">
+                        <option value="exterior">Exterior Window Cleaning</option> 
+                        <option value="interior">Interior Window Cleaning</option> 
+                        <option value="track">Window Track Cleaning</option> 
+                        <option value="frame">Window Frame Cleaning</option> 
+                        <option value="screen">Screen Cleaning</option> 
+                        <option value="solar_panel">Solar Panel Cleaning</option> 
+                        <option value="hard_water">Hard Water Cleaning</option> 
+                    </select>
+                    <br>
+
+                    <label for="notes">Additional Notes:</label>
+                    <textarea id="notes" name="notes" placeholder="Provide additional details or instructions here"></textarea>
+                    <br><br>
+
+                    <!-- <form action="/submission" method="GET"> -->
+                        <div style="text-align: center;">
+                            <button style="margin-left: 30px;" type="submit">Submit</button>
+                        </div>
+                        
+                    <!-- </form> -->
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div class="image-overlay-container" style="background-size: cover; background-position: 80% 50%;; height: 400px;">
+        <img src="window2.jpeg" alt="windows" class="overlay-image">
+        <div class="overlay"></div>
+    </div>
+
+    <form action="" style="text-align: center;">
+        <fieldset style="width: 75%; margin: auto">
+            <br>
+            <br>
+            <h1 class="fw-bold" style="color: #052e6c; font-family: 'Montserrat', sans-serif; font-size: 3.5rem;">ABOUT US</h1>
+            <p class="lead" style="color: #052e6c;">Meet the Team Behind Your Sparkling Windows</p>
+            <br>
+            <br>
+            <div class="emp_container">
+                
+                <div class="text">
+                    <h2 style="text-align: center; color: #052e6c;">Alex Mathis</h2>
+                    <h7 style="text-align: center; color:#0047AB; font-style: italic;">Founder & Owner</h7>
+                    <p style="color: #052e6c;">Hey, I’m Alex—founder of Al’s Windows. I’ve always liked working with my hands and doing a job I can be proud of. 
+                        Starting this business felt like the right move—something honest, practical, and personal.<br>Max and I go way back—we 
+                        grew up together in Reno and have shared a lot of adventures over the years. When we decided to team up, it just made sense. 
+                        I focus on the work in the field, and Max brings in his experience with finance and operations. We’re both committed to doing 
+                        things right and making sure every customer feels taken care of.</p>
+                </div>
+                <div>
+                    <img src="/AlexHeadshot.jpeg" alt="AlexHeadshot" style="padding-left: 20px;">
+                    <br>
+                </div>
+            </div>
+            
+            <br>
+            
+            
+
+            <div class="emp_container">
+                <div>
+                    <img src="/SamHeadshot.jpeg" alt="SamHeadshot">
+                </div>
+                
+                <div class="text">
+                     <h2 style="text-align: center; color: #052e6c;">Max Kiene</h2>
+                    <h7 style="text-align: center; color:#0047AB; font-style: italic;">Co-Owner</h7>
+                    <p style="color: #052e6c;">I’m Max, co-owner of Al’s Windows. The story of this business starts long before the first window we ever cleaned—back in Reno, 
+                        Nevada, where Alex and I grew up as lifelong friends. We’ve spent years adventuring together, from skiing mountain slopes to 
+                        fishing local rivers. Starting a business together felt like the natural next chapter. <br>My background is in corporate finance, 
+                        but after years in the industry, I was ready for something different—something I could build from the ground up. When Alex 
+                        approached me with the idea for Al’s Windows, it clicked. He brought the skills, I brought the structure, and together we’re 
+                        focused on delivering quality, honest work that reflects the pride we take in every job.</p>
+                </div>
+            </div>
+            
+            <br><br>
+        </fieldset>
+        <br>
+    
+    </form>
+
+    <div style="text-align: center; z-index: 4; position: relative;">
+        <br>
+        <p class="lead" style="color: #052e6c;">Discover why customers choose us for their windows.</p>
+        <a class="btn-quote-ban" id="aboutQuoteBtn">Get a Quote</a>
+        <br>
+    </div>
+    <br>
+    <br>
+    <!-- Footer -->
+    <%- include('partials/footer') %>
+
+
+
+
+
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const navbarBtn = document.getElementById('navbarQuoteBtn');
+    const quoteFormWrapper = document.getElementById('quoteFormWrapper');
+    const aboutBtn = document.getElementById('aboutQuoteBtn');
+    const closeForm = document.getElementById('closeForm');
+
+    navbarBtn?.addEventListener('click', () => {
+        quoteFormWrapper?.classList.add('active');
+    });
+
+    aboutBtn?.addEventListener('click', () => {
+        quoteFormWrapper?.classList.add('active');
+    });
+
+    closeForm?.addEventListener('click', () => {
+        quoteFormWrapper?.classList.remove('active');
+    });
+});
+</script>
+
+</html>

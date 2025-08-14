@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Login</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/styles.css">
+
+    <style>
+        body {
+            background-color: #ffffff; /* Light gray background */
+            height: 100vh; /* Full viewport height */
+            margin: 0;
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+        }
+
+        .card {
+            width: 400px;
+            padding: 20px;
+            border-radius: 0px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background-color: #1F5476;
+            border-color: darkgrey;
+    
+        }
+        
+        .btn-primary:hover {
+            background-color: #1a4159;
+        }
+
+        .logo {
+            max-width: 450px; /* Restrict logo size */
+            margin-bottom: 0px; /* Space below the logo */
+        }
+
+        .btn-login {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #003b93;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-login:hover {
+            background-color: #003b93;
+            transform: scale(1.05);
+        } 
+
+       .btn-back {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #003b93;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-back:hover {
+            background-color: #003b93;
+            transform: scale(1.05);
+        } 
+
+        .button-group {
+            display: flex;
+            gap: 12px; /* space between buttons */
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Logo Outside the Card -->
+    <img src="/smallLogo.jpeg" alt="Logo" class="logo">
+    <br>
+    <br>
+    <!-- Centered Login Form -->
+    <div class="card">
+        <h2 class="text-center mb-4" style="color: #052e6c;">Employee Login</h2>
+        <form action="/login" method="POST">
+            <div class="mb-3">
+                <label for="emp_username" class="form-label" style="color: #052e6c;">Username</label>
+                <input type="text" class="form-control" id="emp_username" name="emp_username" placeholder="Enter username" required>
+            </div>
+            <div class="mb-3">
+                <label for="emp_password" class="form-label" style="color: #052e6c;">Password</label>
+                <input type="password" class="form-control" id="emp_password" name="emp_password" placeholder="Enter password" required>
+            </div>
+            <div class="button-group">
+                <button class="btn-back" onclick="window.location.href='/'">Return Home</button>
+                <button type="submit" class="btn-login">Login</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

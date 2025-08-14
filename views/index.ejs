@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al's Windows</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/styles.css">
+   
+    <style>
+
+        /* Title Styling */
+        h1 {
+            text-align: center;
+            margin-bottom: 40px; /* Adds space below the title */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+
+    </style>
+    
+</head>
+<body>
+    <!--Navigation Bar-->
+    <%- include('partials/navbar', { page: 'home', security: security  }) %>
+
+    <!-- Header -->
+    <header>
+        <div class="banner">
+            <div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <h2 class="text-successfw-light ">YOUR VIEW. OUR PASSION.</h2>
+                <div style="text-align: center; z-index: 4; position: relative;">
+                    <br>
+                    <a class="btn-quote-ban" id="bannerQuoteBtn">Get a Quote</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="quoteFormWrapper">
+        <div id="quoteForm" class="quoteform">
+            <button id="closeForm">&times;</button>
+            <form action="/leads" method="POST">
+                <fieldset>
+                    <legend class="leadlegend" style="color: #052e6c;">Request a Quote</legend>
+                
+                    <label for="lead_first_name">First Name:</label>
+                    <input type="text" id="lead_first_name" name="lead_first_name" required>
+                    <br>
+
+                    <label for="lead_last_name">Last Name:</label>
+                    <input type="text" id="lead_last_name" name="lead_last_name" required>
+                    <br>
+
+                    <label for="lead_phone">Phone Number:</label>
+                    <input type="tel" id="lead_phone" name="lead_phone" placeholder="(123) 456-7890" pattern="^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$"  required>
+                    <br>
+
+                    <label for="lead_email">Email Address:</label>
+                    <input type="email" id="lead_email" name="lead_email">
+                    <br>
+
+                    <label for="type_of_service">Type of Service:</label>
+                    <select id="type_of_service" name="type_of_service">
+                        <option value="exterior">Exterior Window Cleaning</option> 
+                        <option value="interior">Interior Window Cleaning</option> 
+                        <option value="track">Window Track Cleaning</option> 
+                        <option value="frame">Window Frame Cleaning</option> 
+                        <option value="screen">Screen Cleaning</option> 
+                        <option value="solar_panel">Solar Panel Cleaning</option> 
+                        <option value="hard_water">Hard Water Cleaning</option> 
+                    </select>
+                    <br>
+
+                    <label for="notes">Additional Notes:</label>
+                    <textarea id="notes" name="notes" placeholder="Provide additional details or instructions here"></textarea>
+                    <br><br>
+
+                    <!-- <form action="/submission" method="GET"> -->
+                        <div style="text-align: center;">
+                            <button style="margin-left: 30px;" type="submit">Submit</button>
+                        </div>
+                        
+                    <!-- </form> -->
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <br>
+    <!-- Services -->
+    <div>
+        <div>
+            <br><br><br><br>
+            <h1 class="fw-bold" style="color: #052e6c; font-family: 'Montserrat', sans-serif; font-size: 3.5rem;">SERVICES</h1>
+            <p class="lead" style="text-align: center; color: #052e6c;">Expert care for every surface, all year round.</p>
+        </div>
+
+        <br>
+
+<!-- Main container for the service cards -->
+<div class="container my-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <!-- Service 1 : Exterior Cleaning -->
+        <div class="col">
+            <div class="card2 h-100 shadow">
+                <img src="/Alex9.jpeg" alt="Exterior Window Cleaning image">
+                <img src="overlay_transparent.png" class="overlay-img" alt="Overlay">
+                <div class="card-content">
+                    <br>
+                    <h2 class="card-title">EXTERIOR WINDOW CLEANING</h2>
+                </div>
+                <div class="hover-overlay">
+                    <div class="text-wrap">
+                        <p style="font-size: 1.8rem; font-family: 'Open Sans', sans-serif;">Wash away outdoor dirt, dust, and grime for crystal-clear windows.</p>
+                    </div> 
+                </div>
+            </div>
+        </div>
+
+        <!-- Service 2 : Interior Cleaning-->
+        <div class="col">
+            <div class="card2 h-100 shadow">
+                <img src="Al3.jpeg" alt="Interior Window Cleaning image">
+                <img src="overlay_transparent.png" class="overlay-img" alt="Overlay">
+                <div class="card-content">
+                    <br>
+                    <h2 class="card-title">INTERIOR WINDOW CLEANING</h2>
+                </div>
+                <div class="hover-overlay">
+                    <div class="text-wrap">
+                        <p style="font-size: 1.8rem; font-family: 'Open Sans', sans-serif;">Let in more light with smudge-free, streak-free interior windows.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service 3 : Track & Frame Cleaning -->
+        <div class="col">
+            <div class="card2 h-100 shadow">
+                <img src="TrackClean.jpeg" class="card-img-top" alt="Frame Cleaning image">
+                <img src="overlay_transparent.png" class="overlay-img" alt="Overlay">
+                <div class="card-content">
+                    <br>
+                    <h2 class="card-title">WINDOW TRACK & FRAME CLEANING</h2>
+                </div>
+                <div class="hover-overlay">
+                    <div class="text-wrap">
+                        <p style="font-size: 1.8rem; font-family: 'Open Sans', sans-serif;">Remove dirt and grime from tracks and frames for smooth operation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service 4 : Screen Cleaning -->
+        <div class="col">
+            <div class="card2 h-100 shadow">
+                <img src="ScreenCleaning1.jpeg" alt="Screen Cleaning image">
+                <img src="overlay_transparent.png" class="overlay-img" alt="Overlay">
+                <div class="card-content">
+                    <br>
+                    <h2 class="card-title">SCREEN<br>CLEANING</h2>
+                </div>
+                <div class="hover-overlay">
+                    <div class="text-wrap">                 
+                        <p style="font-size: 1.8rem; font-family: 'Open Sans', sans-serif;">Clear dust and debris from screens for better airflow and visibility.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Service 5 : Solar Panel Cleaning -->
+        <div class="col">
+            <div class="card2 h-100 shadow">
+                <img src="SolarPanelCleaning.jpeg" class="card-img-top" alt="Solar Panel Cleaning image">
+                <img src="overlay_transparent.png" class="overlay-img" alt="Overlay">
+                <div class="card-content">
+                    <br>
+                    <h2 class="card-title">SOLAR PANEL<br>CLEANING</h2>
+                </div>
+                <div class="hover-overlay">
+                    <div class="text-wrap">
+                        <p style="font-size: 1.8rem; font-family: 'Open Sans', sans-serif;">Clear dirt and buildup to boost solar panel efficiency and lifespan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Service 6 : Hard Water Removal -->
+        <div class="col">
+            <div class="card2 h-100 shadow">
+                <img src="Al1.jpeg" alt="Hard Water Removal image">
+                <img src="overlay_transparent.png" class="overlay-img" alt="Overlay">
+                <div class="card-content">
+                    <br>
+                    <h2 class="card-title">HARD WATER<br> REMOVAL</h2>
+                </div>
+                <div class="hover-overlay">
+                    <div class="text-wrap">
+                        <p style="font-size: 1.8rem; font-family: 'Open Sans', sans-serif;">Remove hard water stains to restore clarity and protect your windows.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+
+
+
+<!-- Our Tools & Techniques Section -->
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h1 class="fw-bold" style="font-family: 'Montserrat', sans-serif; font-size: 3.5rem; color: #052e6c;">OUR TOOLS & TECHNIQUES</h1>
+        <p class="lead" style="text-align: center; color: #052e6c;">We use professional-grade tools to give you the best results—efficient, safe, and spotless. <br>Here’s a look at the equipment that sets us apart:</p>
+    </div>
+
+
+  
+
+    <!-- Cleaning Equipment Section -->
+    <div class="equipment-section">
+        <div class="container my-5">
+            <div class="container my-5">
+                <div class="row align-items-center">
+                    <!-- Image Column -->
+                    <div class="col-md-5 d-flex justify-content-center">
+                        <div class="ratio ratio-1x1" style="max-width: 350px;">
+                            <img src="/Equipment1.jpeg" alt="Water Fed Pole" class="img-fluid rounded shadow-sm" style="object-fit: cover; object-position: top;">
+                        </div>
+                    </div>
+
+                    <!-- Text Column -->
+                    <div class="col-md-7">
+                        <div class="p-4 rounded-4" style="background-color: #e6f0fb;"> 
+                            <h3 class="mt-4 mt-md-0">WATER FED POLE</h3>
+                            <p class="lead">For outdoor window cleaning, we use a water fed pole system that delivers purified water through a soft-bristle brush. We start by gently scrubbing the glass to loosen dirt and buildup, then rinse with the same purified water. As the windows dry naturally, they’re left crystal clear and streak-free.</p>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="p-4 rounded-4" style="background-color: #e6f0fb;"> 
+                            <h3 class="mt-4 mt-md-0">SQUEEGEES & MOPS</h3>
+                            <p class="lead">For interior windows, we use high-quality squeegees, scrubbers, and mops that allow for precise, streak-free cleaning with minimal disruption to your space.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container my-5">
+                <div class="row align-items-center">
+                    <!-- Image Column -->
+                    <div class="col-md-5 d-flex justify-content-center mt-4 mt-md-0">
+                        <div class="ratio ratio-1x1" style="max-width: 350px;">
+                            <img src="/Squeege.jpeg" alt="Water Fed Pole" class="img-fluid rounded shadow-sm" style="object-fit: cover; object-position: top;">
+                        </div>
+                    </div>
+
+                    <!-- Text Column -->
+                    <div class="col-md-7">
+                        <div class="p-4 rounded-4" style="background-color: #e6f0fb;"> 
+                            <h3 class="mt-4 mt-md-0">TRACK & FRAME CLEANING TOOLS</h3>
+                            <p class="lead">We use specialized brushes, vacuums, and microfiber cloths to clean window tracks and frames. This equipment ensures every detail—from the glass to the grooves—gets the attention it needs.</p>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="p-4 rounded-4" style="background-color: #e6f0fb;"> 
+                            <h3 class="mt-4 mt-md-0">HARD WATER REMOVAL</h3>
+                            <p class="lead">When it comes to stubborn hard water stains, we use commercial-grade cleaning solutions designed specifically to dissolve mineral buildup and restore clarity.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+<!-- Google Reviews -->
+<!-- Banner place holder -->
+
+<div class="grbanner-image">
+  <img src="Al3.jpeg"/>
+</div>
+
+<!-- Subscriptions -->
+<!-- Include Bootstrap for layout and styling -->
+ <section class="flip-card-background">
+    <div class="container">
+    <br>
+    <br>
+    <div class="text-center mb-4">
+        <h1 class="fw-bold" style="font-family: 'Montserrat', sans-serif; font-size: 3.5rem; color: #052e6c;">CLEANING PLANS</h1>
+    </div>
+    <br>
+    <div class="row d-flex justify-content-center g-4">
+        <!-- Annual Plan -->
+        <div class="col-12 col-md-4 col-lg-3">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <!-- Front -->
+                    <div class="flip-card-front">
+                        <h2 class="h5 fw-bold" style="color: #052e6c;">ANNUAL PLAN</h2>
+                        <p style="color: #5A7FCF; font-size: 2rem;"><strong>QUOTED PRICE</strong></p>
+                    </div>
+                    <!-- Back -->
+                    <div class="flip-card-back">
+                        <div class="card-content">
+                            <p style="color: #052e6c;">One thorough cleaning per year, ensuring your windows stay clean and clear.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Biannual Plan -->
+        <div class="col-12 col-md-4 col-lg-3">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <!-- Front -->
+                    <div class="flip-card-front">
+                        <h2 class="h5 fw-bold" style="color: #052e6c;">BIANNUAL PLAN</h2>
+                        <p style="color: #5A7FCF; font-size: 2rem;"><strong>10% OFF</strong></p>
+                    </div>
+                    <!-- Back -->
+                    <div class="flip-card-back">
+                        <div class="card-content">
+                            <p style="color: #052e6c;">Two professional cleanings per year, keeping your windows spotless year-round—plus free rain touch-ups within 48 hours.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <!-- Three Times a Year Plan -->
+        <div class="col-12 col-md-4 col-lg-3">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <!-- Front -->
+                    <div class="flip-card-front">
+                        <h2 class="h5 fw-bold" style="color: #052e6c;">TRIANNUAL PLAN</h2>
+                        <p style="color: #5A7FCF; font-size: 2rem;"><strong>15% OFF</strong></p>
+                    </div>
+                    <!-- Back -->
+                    <div class="flip-card-back">
+                        <div class="card-content">
+                            <p style="color: #052e6c;">Keep your windows clean year-round with three scheduled cleanings and free rain touch-ups within a week.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Quarterly Plan -->
+        <div class="col-12 col-md-4 col-lg-3">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <!-- Front -->
+                    <div class="flip-card-front">
+                        <h2 class="h5 fw-bold" style="color: #052e6c;">QUARTERLY PLAN</h2>
+                        <p style="color: #5A7FCF; font-size: 2rem;"><strong>20% OFF</strong></p>
+                    </div>
+                    <!-- Back -->
+                    <div class="flip-card-back">
+                        <div class="card-content">
+                            <p style="color: #052e6c;">Four cleanings per year, ensuring your windows are consistently sparkling and free of buildup with free rain touch ups.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+</div>
+</section>
+
+
+
+
+<!-- Footer -->
+<%- include('partials/footer') %>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const navbarBtn = document.getElementById('navbarQuoteBtn');
+        const sectionBtn = document.getElementById('bannerQuoteBtn');
+        const quoteFormWrapper = document.getElementById('quoteFormWrapper');
+        const closeForm = document.getElementById('closeForm');
+
+        navbarBtn?.addEventListener('click', () => {
+        quoteFormWrapper?.classList.add('active');
+        });
+
+        sectionBtn?.addEventListener('click', () => {
+        quoteFormWrapper?.classList.add('active');
+        });
+
+        closeForm?.addEventListener('click', () => {
+        quoteFormWrapper?.classList.remove('active');
+        });
+    });
+</script>
+
+
+</html>

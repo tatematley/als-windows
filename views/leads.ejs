@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>Request a Quote</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(8, 126, 205);/* url('/window.jpeg') no-repeat center 60% fixed;  Focus on the top part of the image */
+            background-size: cover;
+            color: #333;
+            line-height: 1.6;
+            position: relative; /* For overlay positioning */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        input, select, textarea, button {
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+
+/* Add a full-size fading overlay */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; /* Start from the top of the image */
+            left: 0;
+            width: 100%;
+            height: 100%; /* Cover the entire background */
+            background: rgba(255, 255, 255, 0.5); /* Light white overlay with 30% opacity */
+            z-index: -1; /* Behind all content */
+        }
+
+        .card,
+        form {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95); /* consistent feel */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        fieldset {
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .leadlegend {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            padding: 0 10px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1F5476;
+            box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+        }
+
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1F5476;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #153D53;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .banner {
+            background: url('/images/Sam5.jpeg') no-repeat center center;
+            background-size: cover;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            form {
+                margin: 20px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Nav Bar -->
+    <%- include('partials/navbar', { page: 'leads', security: security }) %>
+    
+    <!-- Form Section -->
+     <br>
+     <br>
+     <br>
+    <form action="/leads" method="POST">
+        <fieldset>
+            <legend class="leadlegend">Request a Quote</legend>
+           
+            <label for="lead_first_name">First Name:</label>
+            <input type="text" id="lead_first_name" name="lead_first_name" required>
+            <br><br>
+
+            <label for="lead_last_name">Last Name:</label>
+            <input type="text" id="lead_last_name" name="lead_last_name" required>
+            <br><br>
+
+            <label for="lead_phone">Phone Number:</label>
+            <input type="tel" id="lead_phone" name="lead_phone" placeholder="(123) 456-7890" pattern="^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$"  required>
+            <br><br>
+
+            <label for="lead_email">Email Address:</label>
+            <input type="email" id="lead_email" name="lead_email">
+            <br><br>
+
+            <label for="type_of_service">Type of Service:</label>
+            <select id="type_of_service" name="type_of_service">
+                <option value="exterior">Exterior Window Cleaning</option> 
+                <option value="interior">Interior Window Cleaning</option> 
+                <option value="track">Window Track Cleaning</option> 
+                <option value="frame">Window Frame Cleaning</option> 
+                <option value="screen">Screen Cleaning</option> 
+                <option value="solar_panel">Solar Panel Cleaning</option> 
+                <option value="hard_water">Hard Water Cleaning</option> 
+            </select>
+            <br><br>
+
+            <label for="notes">Additional Notes:</label>
+            <textarea id="notes" name="notes" placeholder="Provide additional details or instructions here"></textarea>
+            <br><br>
+
+            <form action="/submission" method="GET">
+                <button style="margin-left: 30px;" type="submit">Submit</button>
+            </form>
+        </fieldset>
+    </form>
+
+    <br>
+    <br>
+    <br>
+
+    <!-- Footer -->
+    <%- include('partials/footer') %>
+
+
+    <script>
+        document.getElementById("leadForm").addEventListener("submit", async function(event) {
+            event.preventDefault(); // Prevent default form submission
+        
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+        
+            try {
+                const response = await fetch('/leads', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+        
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message); // Show success alert
+                } else {
+                    alert(result.error || "Something went wrong."); // Show error alert
+                }
+            } catch (error) {
+                alert("Failed to send the request. Please try again.");
+            }
+        });
+        </script>
+
+</body>
+</html>

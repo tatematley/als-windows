@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/styles.css">
+
+    <style>
+        .calccardform {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.95); /* consistent feel */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+        body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    position: relative;
+}
+
+input, select, textarea, button {
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+
+        /* Add a full-size fading overlay */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; /* Start from the top of the image */
+            left: 0;
+            width: 100%;
+            height: 100%; /* Cover the entire background */
+            background: url('/quote.JPG') no-repeat center 40% fixed; /* Focus on the top part of the image */
+            background-size: cover;
+            z-index: -1; /* Behind all content */
+            filter: grayscale(100%);
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Cover whole page */
+            background: rgba(255, 255, 255, 0.3); /* Semi-transparent white overlay */
+            z-index: -1; /* Place this above the image but below content */
+            pointer-events: none; /* Ensure it doesn't interfere with interactions */
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1F5476;
+            box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+        }
+
+
+        .calcbutton {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #003b93;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #003b93;
+            transform: scale(1.05);
+        } 
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .calcLegend {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            padding: 0 10px;
+        } 
+
+        
+    </style>
+    
+</head>
+<body>
+    <!-- Nav Bar -->
+    <%- include('partials/navbar', { page: 'calculator', security: security  }) %>
+
+    <div id="quoteFormWrapper">
+        <div id="quoteForm" class="quoteform">
+            <button id="closeForm">&times;</button>
+            <form action="/leads" method="POST">
+                <fieldset>
+                    <legend class="leadlegend" style="color: #052e6c;">Request a Quote</legend>
+                
+                    <label for="lead_first_name">First Name:</label>
+                    <input type="text" id="lead_first_name" name="lead_first_name" required>
+                    <br>
+
+                    <label for="lead_last_name">Last Name:</label>
+                    <input type="text" id="lead_last_name" name="lead_last_name" required>
+                    <br>
+
+                    <label for="lead_phone">Phone Number:</label>
+                    <input type="tel" id="lead_phone" name="lead_phone" placeholder="(123) 456-7890" pattern="^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$"  required>
+                    <br>
+
+                    <label for="lead_email">Email Address:</label>
+                    <input type="email" id="lead_email" name="lead_email">
+                    <br>
+
+                    <label for="type_of_service">Type of Service:</label>
+                    <select id="type_of_service" name="type_of_service">
+                        <option value="exterior">Exterior Window Cleaning</option> 
+                        <option value="interior">Interior Window Cleaning</option> 
+                        <option value="track">Window Track Cleaning</option> 
+                        <option value="frame">Window Frame Cleaning</option> 
+                        <option value="screen">Screen Cleaning</option> 
+                        <option value="solar_panel">Solar Panel Cleaning</option> 
+                        <option value="hard_water">Hard Water Cleaning</option> 
+                    </select>
+                    <br>
+
+                    <label for="notes">Additional Notes:</label>
+                    <textarea id="notes" name="notes" placeholder="Provide additional details or instructions here"></textarea>
+                    <br><br>
+
+                    <!-- <form action="/submission" method="GET"> -->
+                        <div style="text-align: center;">
+                            <button style="margin-left: 30px;" type="submit">Submit</button>
+                        </div>
+                        
+                    <!-- </form> -->
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="calccardform" style="margin: auto; color: #052e6c;">
+        <fieldset id="cleaningForm" onsubmit="return validateForm()" style="text-align: center;">
+            <legend class="calcLegend" style="color: #052e6c; font-family: 'Montserrat', sans-serif; font-size: 2.5rem;">Quote Calculator</legend>
+<br>
+            <p style="font-style: italic; font-size: .75rem;; margin-bottom: 2px;">*Disclaimer: Only an estimate, not a final quote.</p>
+            <p style="font-style: italic; font-size: .75rem;; margin-top: 2px;">Only quotes above $100.00 are accepted.</p>
+
+            <label style="display: block; font-weight: bold; margin-bottom: 8px; font-size: 1.25rem;" for="paneCount">How many window panes do you need cleaned?</label>
+            <p style="font-size: 0.7em; color: #052e6c; font-size: .75rem;">(One pane is one individual sheet of glass)</p>
+            <input id="paneCount" name="paneCount" type="number" min="0" autofocus required>
+            <br><br>
+
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #052e6c; font-size: 1.25rem;" >Which side of the glass would you like cleaned?</label>
+                <input type="radio" name="glassSide" id="interior" value="3">
+                <label for="interior" style="font-size: 1.25rem;">Interior</label>
+                <br>
+                <input type="radio" id="exterior" name="glassSide" value="5">
+                <label for="exterior" style="font-size: 1.25rem;">Exterior</label>
+                <br>
+                <input type="radio" id="interiorExterior" name="glassSide" value="8">
+                <label for="interiorExterior" style="font-size: 1.25rem;">Both Interior/Exterior</label>
+                
+            <br>
+            <br>
+            <button class="calcbutton" type="submit" onclick="getEstimate()" style="font-size: 1.5rem;">Get Estimate</button>
+            <br>
+            <br>
+
+            <p hidden id="estimateOutput" style="font-weight: bold; color: #5A7FCF; font-size: 1.5rem;"></p>
+        </fieldset>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br><br>
+
+    <!-- Footer -->
+    <%- include('partials/footer') %>
+    
+    <script>
+        
+        function getEstimate ()
+        {
+            let numWindows = parseInt(document.getElementById('paneCount').value);
+            let windowRate = 0
+
+            let radios = document.getElementsByName('glassSide');
+            for (let i = 0; i < radios.length; i++)
+            { 
+                if (radios[i].checked) 
+                { windowRate = parseFloat(radios[i].value); 
+                    break; 
+                } 
+            }
+
+            let priceEstimate = numWindows * windowRate;
+
+            let output = `Estimated Price: $${priceEstimate}.00`;
+            document.getElementById('estimateOutput').innerHTML = output;
+            document.getElementById('estimateOutput').hidden = false;
+        }
+
+        function validateForm()
+        { 
+            let radios = document.getElementsByName('glassSide');
+            let formValid = false; 
+            for (let i = 0; i < radios.length; i++)
+            { 
+                if (radios[i].checked) 
+                { formValid = true; break; } 
+            }
+            if (!formValid)
+            { 
+                alert('Please select an option before submitting the form.'); 
+            } 
+            return formValid; 
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+        const navbarBtn = document.getElementById('navbarQuoteBtn');
+        const sectionBtn = document.getElementById('bannerQuoteBtn');
+        const quoteFormWrapper = document.getElementById('quoteFormWrapper');
+        const closeForm = document.getElementById('closeForm');
+
+        navbarBtn?.addEventListener('click', () => {
+        quoteFormWrapper?.classList.add('active');
+        });
+
+        sectionBtn?.addEventListener('click', () => {
+        quoteFormWrapper?.classList.add('active');
+        });
+
+        closeForm?.addEventListener('click', () => {
+        quoteFormWrapper?.classList.remove('active');
+            });
+        });
+
+
+
+
+    </script>
+
+    
+</body>
+</html>
