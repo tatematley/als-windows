@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lead Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -95,14 +97,79 @@
         .spacing {
             padding: 20px;
         }
+
+        .lead-search { max-width: 620px; }
+
+        .lead-search .lead-search__icon {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            margin-left: 0.75rem;   /* space from left edge */
+            font-size: 1.25rem;
+            color: #6c757d;
+            pointer-events: none;
+        }
+
+        .lead-search .lead-search__input {
+            padding-left: 2.5rem;   /* room for left icon */
+            padding-right: 2.5rem;  /* room for clear icon */
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+
+        .lead-search .lead-search__clear {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-right: 0.75rem;  /* space from right edge */
+            background: transparent;
+            border: 0;
+            padding: 0;
+            line-height: 1;
+            color: #6c757d;
+        }
+
+        .lead-search .lead-search__clear:hover { color: #343a40; }
     </style>
 </head>
 <body>
      <!-- Nav Bar -->
      <%- include('partials/navbar') %>
 
+<div class="container px-3">
+    <div class="lead-search my-4">
+        <form action="/searchleads" method="GET" class="lead-search__form">
+            <div class="position-relative">
+            <i class="bi bi-search lead-search__icon"></i>
+
+            <input
+                id="leadSearch"
+                type="text"
+                name="query"
+                value="<%= typeof query !== 'undefined' ? query : '' %>"
+                class="form-control form-control-lg rounded-pill lead-search__input"
+                placeholder="Search leads by name…"
+                aria-label="Search leads"
+                style="font-size: 1.1rem;"
+            >
+
+            <button
+                id="leadSearchClear"
+                type="button"
+                class="lead-search__clear"
+                aria-label="Clear search"
+                onclick="document.getElementById('leadSearch').value=''; this.form.submit();">
+                <i class="bi bi-x-circle"></i>
+            </button>
+            </div>
+        </form>
+    </div>
+
+
+<!-- 
     <div class="spacing">
-         <!--Search Bar-->
+         
     <div class="search-container">
         <form action="/searchleads" method="GET">
             <input type="text" name="query" placeholder="Search Leads...">
@@ -113,7 +180,9 @@
             <button class="man_button" type="submit" <%=hiddenSubmit%>>View All</button>
         </form>
     </div>
-    <br>
+    <br> -->
+
+
 
     <label><b>Lead Information</b></label>
     <br><br>
@@ -165,6 +234,10 @@
             <% } %>
         </tbody>
     </table>
+    <% if (noResults) { %>
+        <div class="alert text-center mt-3" role="alert">No leads found.</div>
+    <% } %>
+
     <div class="pagination">
         <% if (currentPage > 1) { %>
             <a href="?page=<%= currentPage - 1 %>">Previous</a>
@@ -180,6 +253,6 @@
         <button class="man_button" type="submit">Add Lead</button>
     </form>
     </div>
-    
+</div>
 </body>
 </html>

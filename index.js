@@ -187,7 +187,7 @@ app.get('/customerManagement', async (req, res) => {
 
 
         // Render the page
-        res.render('customerManagement', { customers, currentPage: page, totalPages, navPage: 'customers', security, hiddenView, hiddenSubmit });
+        res.render('customerManagement', { customers, currentPage: page, totalPages, navPage: 'customers', security, hiddenView, hiddenSubmit, noResults: false, query: '' });
     } catch (error) {
         console.error("Error fetching data:", error);
         res.status(500).send("Error fetching data.");
@@ -314,7 +314,7 @@ app.get('/leadManagement', async (req, res) => {
             .offset(offset);
 
         // Render the page
-        res.render('leadManagement', { leads, currentPage: page, totalPages, navPage: 'leads', security, hiddenSubmit, hiddenView });
+        res.render('leadManagement', { leads, currentPage: page, totalPages, navPage: 'leads', security, hiddenSubmit, hiddenView, noResults: false, query: ''});
     } catch (error) {
         console.error("Error fetching data:", error);
         res.status(500).send("Error fetching data.");
@@ -444,101 +444,113 @@ app.post("/deleteLead/:id", (req,res) => {
 });   
 
 
-
-app.get('/searchCustomers', async (req, res) => {
-    const query = req.query.query?.toUpperCase(); // Get the search query from the URL
-    const page = parseInt(req.query.page) || 1; // Default to page 1
-    const limit = 15; // Show 15 customers per page
-    const offset = (page - 1) * limit; // Calculate offset for the database query
-
-    const totalCustomers = await knex("customers").count('* as count').first();
-    const totalPages = Math.ceil(totalCustomers.count / limit);
-
-    hiddenSubmit = "";
-    hiddenView = "hidden";
-
-    if (!query) {
-        return res.render('search', { 
-            customer: [], 
-            security, 
-            navPage: 'customers', 
-            hiddenView, 
-            hiddenSubmit 
-        });
-    }
-
-    try {
-        const customers = await knex('customers')
-            .select('*')
-            .whereRaw('UPPER("cust_first_name") LIKE ?', [`%${query}%`])
-            .orWhereRaw('UPPER("cust_last_name") LIKE ?', [`%${query}%`])
-            .limit(limit)
-            .offset(offset);
-
-        console.log({ customers });
-
-        res.render('customerManagement', { 
-            customers, 
-            currentPage: page, 
-            totalPages, 
-            security, 
-            navPage: 'customers', 
-            hiddenView, 
-            hiddenSubmit 
-        });
-    } catch (error) {
-        console.error('Error performing search:', error);
-        res.status(500).send('An error occurred while searching. Please try again later.');
-    }
-});
-
-
-
 // Route for handling searching leads queries
 app.get('/searchLeads', async (req, res) => {
-    const query = req.query.query?.toUpperCase(); // Get the search query from the URL
-    const page = parseInt(req.query.page) || 1; // Default to page 1
-    const limit = 15; // Show 15 leads per page
-    const offset = (page - 1) * limit; // Calculate offset for the database query
+  try {
+    const q = (req.query.query || '').trim();
+    if (!q) return res.redirect('/leadManagement'); // empty -> show all leads
 
-    const totalLeads = await knex("leads").count('* as count').first();
-    const totalPages = Math.ceil(totalLeads.count / limit);
+    const page = parseInt(req.query.page) || 1;
+    const limit = 15;
+    const offset = (page - 1) * limit;
 
     hiddenSubmit = "";
     hiddenView = "hidden";
 
-    if (!query) {
-        return res.render('search', { 
-            leads: [], 
-            security, 
-            navPage: 'leads', 
-            hiddenView, 
-            hiddenSubmit 
-        });
-    }
+    // Count filtered results for pagination
+    const totalCountRow = await knex('leads')
+      .whereILike('lead_first_name', `%${q}%`)
+      .orWhereILike('lead_last_name', `%${q}%`)
+      .count('* as count')
+      .first();
 
-    try {
-        const leads = await knex('leads')
-            .select('*')
-            .whereRaw('UPPER("lead_first_name") LIKE ?', [`%${query}%`])
-            .orWhereRaw('UPPER("lead_last_name") LIKE ?', [`%${query}%`])
-            .limit(limit)
-            .offset(offset);
-            
-        res.render('leadManagement', { 
-            leads, 
-            currentPage: page, 
-            totalPages, 
-            security, 
-            navPage: 'leads', 
-            hiddenView, 
-            hiddenSubmit 
-        });
-    } catch (error) {
-        console.error('Error performing search:', error);
-        res.status(500).send('An error occurred while searching. Please try again later.');
-    }
+    // Select only columns we know exist in your table/UI
+    const leads = await knex('leads')
+      .select(
+        'lead_id',
+        'lead_first_name',
+        'lead_last_name',
+        'method_obtained',
+        'lead_street_address',
+        'lead_city',
+        'lead_state',
+        'lead_phone',
+        'lead_email'
+      )
+      .whereILike('lead_first_name', `%${q}%`)
+      .orWhereILike('lead_last_name', `%${q}%`)
+      .limit(limit)
+      .offset(offset);
+
+    const totalPages = Math.ceil((Number(totalCountRow?.count) || 0) / limit);
+    const noResults = leads.length === 0;
+
+    return res.render('leadManagement', {
+      leads,
+      currentPage: page,
+      totalPages,
+      query: q,
+      noResults,          // so EJS can show "No leads found."
+      security,
+      navPage: 'leads',
+      hiddenView,
+      hiddenSubmit
+    });
+  } catch (error) {
+    console.error('Error performing search leads:', error);
+    res.status(500).send('An error occurred while searching. Please try again later.');
+  }
 });
+
+
+app.get('/searchCustomers', async (req, res) => {
+  try {
+    const q = (req.query.query || '').trim();
+    if (!q) return res.redirect('/customerManagement');   // Clear → full list
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = 15;
+    const offset = (page - 1) * limit;
+
+    hiddenSubmit = "";
+    hiddenView = "hidden";
+
+    const totalCountRow = await knex('customers')
+      .whereILike('cust_first_name', `%${q}%`)
+      .orWhereILike('cust_last_name', `%${q}%`)
+      .count('* as count')
+      .first();
+
+    const customers = await knex('customers')
+      .select('*')
+      .whereILike('cust_first_name', `%${q}%`)
+      .orWhereILike('cust_last_name', `%${q}%`)
+      .limit(limit)
+      .offset(offset);
+
+    const totalPages = Math.ceil((Number(totalCountRow?.count) || 0) / limit);
+    const noResults = customers.length === 0;
+
+    return res.render('customerManagement', {
+      customers,
+      currentPage: page,
+      totalPages,
+      query: q,
+      noResults,
+      security,
+      navPage: 'customers',
+      hiddenView,
+      hiddenSubmit,
+      noResults, 
+      query: ''
+    });
+  } catch (error) {
+    console.error('Error performing search:', error);
+    res.status(500).send('An error occurred while searching. Please try again later.');
+  }
+});
+
+
 
 
 // get route for the submission page

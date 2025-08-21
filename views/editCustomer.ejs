@@ -19,12 +19,12 @@
 
         h1 {
             font-size: 2rem;
-            font-weight: bold;
-            color: #333;
+            font-weight: bold !important;
             padding: 0 10px;
-            color: #052e6c;
+            color: #052e6c !important;
             margin-bottom: 20px;
             text-align: center;
+            font-family: 'Montserrat', sans-serif;
         }
 
 
@@ -156,12 +156,15 @@
             <!-- Customer Status (Radio Buttons) -->
             <div class="form-group">
                 <label>Active Status</label>
+                <br>
                 <label>
                     <input type="radio" name="cust_status_id" value="1" <%= customerRec.cust_status_id == 1 ? 'checked' : '' %>> Active
                 </label>
+                <br>
                 <label>
                     <input type="radio" name="cust_status_id" value="2" <%= customerRec.cust_status_id == 2 ? 'checked' : '' %>> Inactive
                 </label>
+                <br>
                 <label>
                     <input type="radio" name="cust_status_id" value="3" <%= customerRec.cust_status_id == 3 ? 'checked' : '' %>> Do Not Contact
                 </label>

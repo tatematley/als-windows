@@ -29,7 +29,7 @@
             transform: scale(1.05);
         }  
 
-        .btn-logout {
+        .navbar .btn-logout {
             background-color: #0047AB;
             color: white;
             font-weight: 600;
@@ -43,9 +43,11 @@
             display: inline-block;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             cursor: default;
+            width: auto !important;
+
         }
 
-        .btn-logout:hover {
+        .navbar .btn-logout:hover {
             background-color: #003b93;
             transform: scale(1.05);
         }  
@@ -55,12 +57,13 @@
             position: fixed;
             top: 0;
             width: 100%;
-            height: 60px;   /* make sure you give it a height */
+            height: 80px;   /* matches actual navbar height */
+            z-index: 1000;
         }
 
         body {
-            margin: 0;           /* reset default margin */
-            padding-top: 60px;   /* same as nav height */
+            margin: 0;
+            padding-top: 80px;  /* match nav height exactly */
         }
 
 

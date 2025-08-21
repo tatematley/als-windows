@@ -7,6 +7,8 @@
     
     <title>Customer Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -96,25 +98,89 @@
         .spacing {
             padding: 20px;
         }
+
+
+        .input-group-lg .form-control {
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+        .input-group .btn {
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+
+
+
+        .customer-search { max-width: 620px; }
+
+        /* Left search icon */
+        .customer-search .customer-search__icon {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            margin-left: 0.75rem;      /* ~ms-3 */
+            font-size: 1.25rem;        /* tweak icon size here */
+            color: #6c757d;            /* muted */
+            pointer-events: none;
+        }
+
+        /* Input padding so icons don’t overlap text */
+        .customer-search .customer-search__input {
+            padding-left: 2.5rem;      /* space for left icon */
+            padding-right: 2.5rem;     /* space for clear icon */
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+
+        /* Clear (X) button on the right */
+        .customer-search .customer-search__clear {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-right: 0.75rem;     /* ~me-3 */
+            background: transparent;
+            border: 0;
+            padding: 0;
+            line-height: 1;
+            color: #6c757d;
+        }
+        .customer-search .customer-search__clear:hover { color: #343a40; }
+
+
+
     </style>
 </head>
 <body>
      <!-- Nav Bar -->
     <%- include('partials/navbar') %>
 
-    <div class="spacing">
-        <!--Search Bar-->
-    <div class="search-container">
-        <form action="/searchCustomers" method="GET">
-            <input type="text" name="query" placeholder="Search Customers...">
-            <button class="btn_button" type="submit"<%=hiddenView%>>Search</button>
-        </form>
-        <br>
-        <form action="/customerManagement" method="GET">
-            <button class="btn_button" type="submit" <%=hiddenSubmit%>>View All</button>
+<div class="container px-3">
+    <div class="customer-search my-4">
+        <form action="/searchCustomers" method="GET" class="customer-search__form">
+            <div class="position-relative">
+            <i class="bi bi-search customer-search__icon"></i>
+
+            <input
+                id="customerSearch"
+                type="text"
+                name="query"
+                value="<%= typeof query !== 'undefined' ? query : '' %>"
+                class="form-control form-control-lg rounded-pill customer-search__input"
+                placeholder="Search customers by name…"
+                aria-label="Search customers"
+                style="font-size: 1.1rem;"
+            >
+
+            <button
+                id="customerSearchClear"
+                type="button"
+                class="customer-search__clear"
+                aria-label="Clear search"
+                onclick="document.getElementById('customerSearch').value=''; this.form.submit();">
+                <i class="bi bi-x-circle"></i>
+            </button>
+            </div>
         </form>
     </div>
-    <br>
 
     <label><b>Customer Information</b></label>
     <br><br>
@@ -163,6 +229,11 @@
             <% } %>
         </tbody>
     </table>
+    <% if (noResults) { %>
+            <div class="alert text-center mt-3" role="alert">
+            No customers found.
+            </div>
+    <% } %>
     <div class="pagination">
         <% if (currentPage > 1) { %>
             <a href="?page=<%= currentPage - 1 %>">Previous</a>
@@ -178,6 +249,9 @@
         <button class="btn_button" type="submit">Add Customer</button>
     </form>
     </div>
+
+</div>
     
 </body>
+
 </html>
