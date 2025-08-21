@@ -9,38 +9,24 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
+            background-color: #ffffff;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-        }
-
-        .banner {
-            background: linear-gradient( rgba(92, 88, 88, 0.7), rgba(92, 88, 88, 0.7)), 
-                        url('logo.png') no-repeat center center;
-            background-size: cover;
-            height: 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: #ffffff;
-            font-family: 'Oswald', sans-serif;
-            text-transform: uppercase;
-            font-size: 3rem;
-            padding: 50px 20px;
+            flex-direction: column;
+            gap:0;
         }
 
         .success-container {
             text-align: center;
-            padding: 40px;
+            padding: 20px;
             background-color: #ffffff;
             border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             max-width: 500px;
             width: 100%;
             margin-top: 20px;
@@ -65,20 +51,21 @@
         }
 
         .btn-home {
-            background-color: #003d80;
-            color: white;
-            padding: 12px 25px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-            text-decoration: none;
             display: inline-block;
+            padding: 10px 20px;
+            background-color: #003b93;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .btn-home:hover {
             background-color: #003d80;
+            transform: scale(1.05);
         }
 
         @media (max-width: 768px) {
@@ -93,21 +80,25 @@
             text-transform: uppercase;
             font-family: 'Oswald', sans-serif;
         }
+
+        .logo {
+            max-width: 450px; /* Restrict logo size */
+            margin-bottom: -30px; /* Space below the logo */
+        }
     </style>
 </head>
 <body>
-    <!-- Banner Section -->
-    <div class="banner">
-        <div class="banner-text">The Glass Guys</div>
-    </div>
+    <%- include('partials/navbar') %>
 
+    <img src="/smallLogo.jpeg" alt="Logo" class="logo">
+    <br>
+    <br>
     <!-- Success Message Section -->
     <div class="success-container">
-        <div class="success-icon">✔️</div>
+        <div class="success-icon"><i class="fas fa-check-circle"></i></div>
         <div class="success-message">Thank you! Your form has been successfully submitted.</div>
-        <div class="success-details">We will contact you soon.</div>
-        <a href="/" class="btn-home">Go to Homepage</a>
+        <div class="success-details">We will contact you soon</div>
+        <button class="btn-home" onclick="window.location.href='/'">Go to Homepage</button>
     </div>
 </body>
 </html>
-

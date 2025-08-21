@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Lead</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,27 +16,31 @@
             background-color: #f9f9f9;
         }
 
-        .container {
+        .conf_container {
             max-width: 600px;
             margin: 50px auto;
             background-color: white;
-            padding: 20px 30px; /* Added side padding for better spacing */
+            padding: 20px; /* Added side padding for better spacing */
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            padding: 0 10px;
+            color: #052e6c;
+            margin-bottom: 20px;
             text-align: center;
-            color: #1F5476;
-            margin-bottom: 30px; /* Increased bottom margin for better spacing */
-            font-size: 1.8rem; /* Matched font size for header consistency */
         }
 
         label {
+            font-size: 1.1rem;
             display: block;
             font-weight: bold;
-            margin-bottom: 8px; /* Slightly larger gap for clarity */
-            color: #1F5476;
+            margin-bottom: 5px; /* Slightly larger gap for clarity */
+            color: #052e6c;
         }
 
         input[type="text"],
@@ -53,20 +58,19 @@
 
         input:focus {
             outline: none;
-            border-color: #1F5476;
+            border-color: #052e6c;
             box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
         }
 
         button {
-            background-color: #1F5476;
+            background-color: #003b93;
             color: white;
-            padding: 12px 20px;
+            padding: 12px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 1rem;
-            width: 100%; /* Button spans the full width */
-            margin-top: 15px; /* Consistent spacing with inputs */
+            font-size: 1.1rem;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
         button:hover {
@@ -74,7 +78,23 @@
         }
 
         .form-group {
-            margin-bottom: 20px; /* Standardized spacing for groups */
+            margin-bottom: 15px; /* Standardized spacing for groups */
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #052e6c;
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
         }
 
         .notes {
@@ -86,38 +106,51 @@
         }
 
         select {
-            width: 95%;
+            width: 100%;
             padding: 10px;
+            padding-right: 35px;              /* space for arrow */
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
             background-color: white;
+
+            
+            /* remove default arrow */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+
+            /* custom arrow */
+            background: white url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><polygon points='0,0 10,0 5,7' style='fill:%23052e6c;'/></svg>") no-repeat right 10px center;
+            background-size: 12px;
         }
 
-    select:focus {
-        outline: none;
-        border-color: #1F5476;
-        box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
-    }
+        select:focus {
+            outline: none;
+            border-color: #052e6c;
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Confirm lead as Customer</h1>
+    <%- include('partials/navbar') %>
+
+    <div class="conf_container">
+        <h1>Confirm Lead as Customer</h1>
         <form action="/confirmLead/<%= lead.lead_id %>" method="POST">
             <div class="form-group">
-                <label for="lead_first_name">First Name:</label>
+                <label for="lead_first_name">First Name</label>
                 <input type="text" id="lead_first_name" name="lead_first_name" value="<%= lead.lead_first_name%>">
             </div>
 
             <div class="form-group">
-                <label for="lead_last_name">Last Name:</label>
+                <label for="lead_last_name">Last Name</label>
                 <input type="text" id="lead_last_name" name="lead_last_name" value="<%= lead.lead_last_name%>">
             </div>
 
             <div class="form-group">
-                <label for="method_obtained">Method Obtained:</label>
+                <label for="method_obtained">Method Obtained</label>
                 <select id="method_obtained" name="method_obtained" required>
                     <option value="" disabled selected>Select a method</option>
                     <option value="website" <%= lead.method_obtained === 'website' ? 'selected' : ''%>>Website</option>
@@ -126,32 +159,32 @@
             </div>
 
             <div class="form-group">
-                <label for="lead_street_address">Street Address:</label>
+                <label for="lead_street_address">Street Address</label>
                 <input type="text" id="lead_street_address" name="lead_street_address" value="<%= lead.lead_street_address%>">
             </div>
 
             <div class="form-group">
-                <label for="lead_city">City:</label>
+                <label for="lead_city">City</label>
                 <input type="text" id="lead_city" name="lead_city" value="<%= lead.lead_city%>">
             </div>
 
             <div class="form-group">
-                <label for="lead_state">State:</label>
+                <label for="lead_state">State</label>
                 <input type="text" id="lead_state" name="lead_state" value="<%= lead.lead_state%>">
             </div>
 
             <div class="form-group">
-                <label for="lead_phone">Phone Number:</label>
+                <label for="lead_phone">Phone Number</label>
                 <input type="text" id="lead_phone" name="lead_phone" pattern="[0-9]{10}" title="Enter a valid 10-digit phone number" value="<%= lead.lead_phone%>">
             </div>
 
             <div class="form-group">
-                <label for="lead_email">Email:</label>
+                <label for="lead_email">Email</label>
                 <input type="text" id="lead_email" name="lead_email" value="<%= lead.lead_email%>">
             </div>
 
             <div class="form-group">
-                <label for="notes">Additional Notes:</label>
+                <label for="notes">Additional Notes</label>
                 <input type="text" id="notes" name="notes" maxlength="200">
                 <span class="notes">Max 200 characters</span>
             </div>
