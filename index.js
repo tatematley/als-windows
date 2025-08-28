@@ -75,8 +75,23 @@ app.get('/db-ping', async (_, res) => {
   }
 });
 
-
-
+// delete this??? 
+const fs = require('fs');
+app.get('/__list-images', async (req, res) => {
+  try {
+    const dir = path.join(__dirname, 'images');
+    const names = await fs.promises.readdir(dir);
+    const stats = await Promise.all(
+      names.map(async n => {
+        const s = await fs.promises.stat(path.join(dir, n));
+        return { name: n, sizeBytes: s.size };
+      })
+    );
+    res.json(stats.sort((a,b)=>a.name.localeCompare(b.name)));
+  } catch (e) {
+    res.status(500).send(e.message);
+  }
+});
 
 
 
