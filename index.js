@@ -20,12 +20,22 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({extended: true}));
 
-app.use(express.static(path.join(__dirname, 'images')));
+// app.use(express.static(path.join(__dirname, 'images')));
+
+// app.use('/styles', express.static(path.join(__dirname, 'styles')));
+// // Serve static files from the 'public' directory
+// app.use(express.static(path.join(__dirname, 'public')));
+// app.use('/js', express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'js')));
 
 app.use('/styles', express.static(path.join(__dirname, 'styles')));
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'js')));
+app.use('/images', express.static(path.join(__dirname, 'images'))); // explicit
+app.use(express.static(path.join(__dirname, 'public')));            // keep last
+
+
+
+
+
 
 const knex = require("knex")({
   client: "pg",
