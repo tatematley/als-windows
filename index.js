@@ -20,20 +20,12 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({extended: true}));
 
-// app.use(express.static(path.join(__dirname, 'images')));
 
-// app.use('/styles', express.static(path.join(__dirname, 'styles')));
-// // Serve static files from the 'public' directory
-// app.use(express.static(path.join(__dirname, 'public')));
-// app.use('/js', express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'js')));
 
 app.use('/styles', express.static(path.join(__dirname, 'styles')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'js')));
-app.use('/images', express.static(path.join(__dirname, 'images'))); // explicit
-app.use(express.static(path.join(__dirname, 'public')));            // keep last
-
-
-
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 
@@ -74,27 +66,6 @@ app.get('/db-ping', async (_, res) => {
     res.status(500).send(e.message);
   }
 });
-
-// delete this??? 
-const fs = require('fs');
-app.get('/__list-images', async (req, res) => {
-  try {
-    const dir = path.join(__dirname, 'images');
-    const names = await fs.promises.readdir(dir);
-    const stats = await Promise.all(
-      names.map(async n => {
-        const s = await fs.promises.stat(path.join(dir, n));
-        return { name: n, sizeBytes: s.size };
-      })
-    );
-    res.json(stats.sort((a,b)=>a.name.localeCompare(b.name)));
-  } catch (e) {
-    res.status(500).send(e.message);
-  }
-});
-
-
-
 
 
 
