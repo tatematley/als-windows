@@ -34,15 +34,17 @@ const knex = require("knex")({
     user: process.env.RDS_USERNAME || "postgres",
     password: process.env.RDS_PASSWORD || "alswindows",
     database: process.env.RDS_DB_NAME || "als-windows",
-    port: process.env.RDS_PORT || 5432,
-    ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : false
+    port: Number(process.env.RDS_PORT) || 5432,
+    ssl:(process.env.DB_SSL === '1' || process.env.DB_SSL === 'true')
+    ? { rejectUnauthorized: false }
+    : false,
   },
   pool: {
-    min: 0,
-    max: 2,                           // keep tiny (RDS micro/small)
+    min: 2,
+    max: 8,                           // keep tiny (RDS micro/small)
     acquireTimeoutMillis: 10000,      // 10s wait to get a client
     createTimeoutMillis: 10000,
-    idleTimeoutMillis: 30000,         // release idle clients faster
+    idleTimeoutMillis: 10000,         // release idle clients faster
     reapIntervalMillis: 1000,
     afterCreate: (conn, done) => {
       // keep slow queries from hogging the pool
