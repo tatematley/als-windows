@@ -20,9 +20,7 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({extended: true}));
 
-// app.use(express.static(path.join(__dirname, 'images')));
-
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'images')));
 
 app.use('/styles', express.static(path.join(__dirname, 'styles')));
 // Serve static files from the 'public' directory
