@@ -57,6 +57,16 @@ const knex = require("knex")({
   }
 });
 
+
+// Show the employee navbar ONLY when you're on an employee URL AND security === true
+app.use((req, res, next) => {
+  const onEmployeeUrl = /^\/(customerManagement|leadManagement|editCustomer|addCustomer|editLead|addLead|confirmLead)/.test(req.path);
+  res.locals.isEmployee = (typeof security !== 'undefined' ? security === true : false) && onEmployeeUrl;
+  next();
+});
+
+
+
 app.get('/db-ping', async (_, res) => {
   try {
     const r = await knex.raw('select 1 as ok');
