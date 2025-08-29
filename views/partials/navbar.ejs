@@ -7,59 +7,54 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
-    .navbar-brand img {
-        height: 60px;        /* default desktop size */
-        width: auto;         /* no forced square */
-        border-radius: 0;    /* no circle */
-        object-fit: contain; /* don’t crop */
-        }
+    /* ===== Scoped navbar styles to avoid page-level CSS collisions ===== */
+    nav.site-navbar { position: fixed; top: 0; width: 100%; height: 80px; z-index: 1000; }
+    body { margin: 0; padding-top: 80px; } /* match navbar height */
 
-    .quote-btn2{
-      padding:8px 20px;font-size:1rem;font-weight:600;border-radius:8px;
-      background-color:#0047AB;color:#fff;transition:.3s;text-decoration:none;
-      box-shadow:0 4px 12px rgba(0,0,0,.4); border:none;
+    .site-navbar .navbar-brand img {
+      height: 60px;          /* desktop default */
+      width: auto;
+      border-radius: 0;      /* no circle */
+      object-fit: contain;   /* don’t crop */
     }
 
-    .quote-btn2:hover{ background-color:#003b93; transform:scale(1.05); }
-
-    .navbar .btn-logout{
-      background-color:#0047AB;color:#fff;font-weight:600;font-size:1rem;
-      padding:10px 24px;border:none;margin-left:10px;border-radius:8px;
-      transition:.3s;text-decoration:none;display:inline-block;
-      box-shadow:0 4px 12px rgba(0,0,0,.4); cursor:pointer; width:auto!important;
+    .site-navbar .quote-btn2{
+      padding: 8px 20px; font-size: 1rem; font-weight: 600; border-radius: 8px;
+      background-color: #0047AB; color: #fff; transition: .3s; text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,.4); border: none;
     }
+    .site-navbar .quote-btn2:hover{ background-color: #003b93; transform: scale(1.05); }
 
-    .navbar .btn-logout:hover{ background-color:#003b93; transform:scale(1.05); }
-
-    nav{ position:fixed; top:0; width:100%; height:80px; z-index:1000; }
-
-    body{ margin:0; padding-top:80px; }
-
-    
+    .site-navbar .btn-logout{
+      background-color: #0047AB; color: #fff; font-weight: 600; font-size: 1rem;
+      padding: 10px 24px; border: none; margin-left: 10px; border-radius: 8px;
+      transition: .3s; text-decoration: none; display: inline-block;
+      box-shadow: 0 4px 12px rgba(0,0,0,.4); cursor: pointer; width: auto !important;
+    }
+    .site-navbar .btn-logout:hover{ background-color: #003b93; transform: scale(1.05); }
 
     /* ------ Mobile-only tweaks (desktop unchanged) ------ */
     @media (max-width: 991.98px){
-        .navbar-brand img {
-            height: 40px;      
-        }
-    
-      .navbar .container{ position:relative; gap:.5rem; }
-      .navbar-toggler{ padding:.25rem .5rem; margin-left:.25rem; border-color:rgba(255,255,255,.4); }
+      .site-navbar .navbar-brand img { height: 70px; } /* bigger logo on mobile */
 
-      .navbar-collapse{
-        position:absolute; top:80px; right:0; width:250px;
-        background-color:#052e6c; padding:1rem; border-radius:0 0 0 8px;
-        box-shadow:-2px 4px 8px rgba(0,0,0,.25); z-index:1200;
+      .site-navbar .container { position: relative; gap: .5rem; }
+      .site-navbar .navbar-toggler { padding: .25rem .5rem; margin-left: .25rem; border-color: rgba(255,255,255,.4); }
+
+      /* right-side dropdown panel */
+      .site-navbar .navbar-collapse{
+        position: absolute; top: 80px; right: 0; width: 250px;
+        background-color: #052e6c; padding: 1rem; border-radius: 0 0 0 8px;
+        box-shadow: -2px 4px 8px rgba(0,0,0,.25); z-index: 1200;
       }
-      .navbar-collapse .nav-link{
-        display:block; margin-bottom:.75rem; color:#fff !important; font-size:1.1rem;
+      .site-navbar .navbar-collapse .nav-link{
+        display: block; margin-bottom: .75rem; color: #fff !important; font-size: 1.1rem;
       }
 
       /* mobile buttons sizing */
-      .quote-btn2.d-lg-none,
-      .btn-logout.d-lg-none{
-        padding:6px 12px; font-size:.95rem; border:none !important;
-        box-shadow:0 4px 12px rgba(0,0,0,.4);
+      .site-navbar .quote-btn2.d-lg-none,
+      .site-navbar .btn-logout.d-lg-none{
+        padding: 6px 12px; font-size: .95rem; border: none !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,.4);
       }
     }
   </style>
@@ -68,13 +63,13 @@
 <body>
   <% if (security) { %>
   <!-- Employee Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#052e6c;height:80px;position:fixed;z-index:1000;width:100%;">
+  <nav class="navbar navbar-expand-lg navbar-dark site-navbar" style="background-color:#052e6c;">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center" href="/">
         <img src="/images/whiteLogo.png" alt="Al's Windows logo" class="me-2">
       </a>
 
-      <!-- MOBILE: always-visible logout button -->
+      <!-- MOBILE: always-visible Logout -->
       <button class="btn-logout d-lg-none ms-auto me-2" id="navbarLogoutBtnSm" type="button">Logout</button>
 
       <!-- Hamburger -->
@@ -83,12 +78,13 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
+      <!-- Collapse -->
       <div class="collapse navbar-collapse" id="navbarNavEmp">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link <%= (navPage === 'customers') ? 'active' : '' %>" href="/customerManagement">Customers</a></li>
           <li class="nav-item"><a class="nav-link <%= (navPage === 'leads') ? 'active' : '' %>" href="/leadManagement">Leads</a></li>
         </ul>
-        <!-- DESKTOP: logout stays here -->
+        <!-- DESKTOP: Logout -->
         <button type="button" class="btn-logout ms-3 d-none d-lg-inline-block" onclick="window.location.href='/logout'">Logout</button>
       </div>
     </div>
@@ -96,13 +92,13 @@
 
   <% } else { %>
   <!-- Public Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#052e6c;height:80px;position:fixed;z-index:1000;width:100%;">
+  <nav class="navbar navbar-expand-lg navbar-dark site-navbar" style="background-color:#052e6c;">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center" href="/">
         <img src="/images/whiteLogo.png" alt="Al's Windows logo" class="me-2">
       </a>
 
-      <!-- MOBILE: always-visible quote button -->
+      <!-- MOBILE: always-visible Quote -->
       <button class="quote-btn2 d-lg-none ms-auto me-2" id="navbarQuoteBtnSm" type="button">Get a Quote</button>
 
       <!-- Hamburger -->
@@ -111,12 +107,13 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
+      <!-- Collapse -->
       <div class="collapse navbar-collapse" id="navbarNavPub">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link <%= (navPage === 'about') ? 'active' : '' %>" href="/aboutUs">About Us</a></li>
           <li class="nav-item"><a class="nav-link <%= (navPage === 'calculator') ? 'active' : '' %>" href="/calculator">Quote Calculator</a></li>
         </ul>
-        <!-- DESKTOP: quote button stays here -->
+        <!-- DESKTOP: Quote -->
         <a class="btn-quote ms-3 d-none d-lg-inline-block" id="navbarQuoteBtn">Get a Quote</a>
       </div>
     </div>
@@ -129,22 +126,19 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const quoteFormWrapper = document.getElementById('quoteFormWrapper');
-      const closeForm = document.getElementById('closeForm');
-      const btnDesktop = document.getElementById('navbarQuoteBtn');
-      const btnMobile  = document.getElementById('navbarQuoteBtnSm');
+      const closeForm       = document.getElementById('closeForm');
+      const btnDesktop      = document.getElementById('navbarQuoteBtn');
+      const btnMobile       = document.getElementById('navbarQuoteBtnSm');
       const btnLogoutMobile = document.getElementById('navbarLogoutBtnSm');
 
       const openQuote = () => quoteFormWrapper?.classList.add('active');
+
       btnDesktop?.addEventListener('click', openQuote);
       btnMobile?.addEventListener('click', openQuote);
-
-      btnLogoutMobile?.addEventListener('click', () => {
-        window.location.href='/logout';
-      });
+      btnLogoutMobile?.addEventListener('click', () => { window.location.href = '/logout'; });
 
       closeForm?.addEventListener('click', () => quoteFormWrapper?.classList.remove('active'));
     });
   </script>
 </body>
 </html>
-
