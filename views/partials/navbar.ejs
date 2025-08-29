@@ -1,152 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Al's Windows</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .navbar-brand img {
-            height: 60px; /* Adjust the height for logo size */
-            width: 60px; /* Keep width consistent for a circle */
-            border-radius: 50%; /* Makes the image circular */
-            object-fit: cover; /* Ensures the image scales nicely */
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Al's Windows</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .quote-btn2 {
-            padding: 8px 20px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            background-color: #0047AB;
-            color: white;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
+  <style>
+    .navbar-brand img{
+      height:60px;width:60px;border-radius:50%;object-fit:cover;
+    }
+    .quote-btn2{
+      padding:8px 20px;font-size:1rem;font-weight:600;border-radius:8px;
+      background-color:#0047AB;color:#fff;transition:.3s;text-decoration:none;
+    }
+    .quote-btn2:hover{ background-color:#003b93; transform:scale(1.05); }
 
-        .quote-btn2:hover {
-            background-color: #003b93;
-            transform: scale(1.05);
-        }  
+    .navbar .btn-logout{
+      background-color:#0047AB;color:#fff;font-weight:600;font-size:1rem;
+      padding:10px 24px;border:none;margin-left:10px;border-radius:8px;
+      transition:.3s;text-decoration:none;display:inline-block;
+      box-shadow:0 4px 12px rgba(0,0,0,.4); cursor:default; width:auto!important;
+    }
+    .navbar .btn-logout:hover{ background-color:#003b93; transform:scale(1.05); }
 
-        .navbar .btn-logout {
-            background-color: #0047AB;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-            padding: 10px 24px;
-            border: none;
-            margin-left: 10px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            cursor: default;
-            width: auto !important;
+    nav{ position:fixed; top:0; width:100%; height:80px; z-index:1000; }
+    body{ margin:0; padding-top:80px; } /* match nav height */
 
-        }
-
-        .navbar .btn-logout:hover {
-            background-color: #003b93;
-            transform: scale(1.05);
-        }  
-
-
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 80px;   /* matches actual navbar height */
-            z-index: 1000;
-        }
-
-        body {
-            margin: 0;
-            padding-top: 80px;  /* match nav height exactly */
-        }
-
-        @media (max-width: 991.98px) { /* Bootstrap "lg" breakpoint */
-        .navbar-collapse {
-            background-color: #052e6c;   /* match your navbar color */
-            padding: 1rem;              /* some breathing room for links */
-            border-radius: 0 0 8px 8px; /* optional: rounded bottom */
-        }
-        .navbar-collapse .nav-link {
-            color: #fff !important;     /* ensure links are visible */
-        }
-        }
-
-
-    </style>
+    /* ------ Mobile dropdown as right-side panel (desktop unchanged) ------ */
+    @media (max-width: 991.98px){
+      .navbar .container{ position:relative; } /* anchor the panel to the container */
+      .navbar-collapse{
+        position:absolute; top:80px; right:0; width:250px;
+        background-color:#052e6c; padding:1rem; border-radius:0 0 0 8px;
+        box-shadow:-2px 4px 8px rgba(0,0,0,.25); z-index:1200;
+      }
+      .navbar-collapse .nav-link{
+        display:block; margin-bottom:.75rem; color:#fff !important; font-size:1.1rem;
+      }
+      /* always-visible mobile quote button (tweak size a touch) */
+      .quote-btn2.d-lg-none{ padding:6px 14px; font-size:.95rem; }
+    }
+  </style>
 </head>
+
 <body>
-  <!-- Navigation Bar -->
   <% if (security) { %>
-    <!-- Employee Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #052e6c; height: 80px; position: fixed; z-index: 1000; width: 100%;">
-      <div class="container">
-        <!-- Logo -->
-        <a class="navbar-brand d-flex align-items-center" href="/"> 
-          <img src="../images/whiteLogo.png" alt="Al's Windows logo" class="me-2" style="height: 50px; width: auto; object-fit: contain; border-radius: 0;">
-        </a> 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavEmp" aria-controls="navbarNavEmp" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavEmp">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link <%= (navPage === 'customers') ? 'active' : '' %>" href="/customerManagement">Customers</a></li>
-            <li class="nav-item"><a class="nav-link <%= (navPage === 'leads') ? 'active' : '' %>" href="/leadManagement">Leads</a></li>
-          </ul>
-          <button type="button" class="btn-logout ms-3" onclick="window.location.href='/logout'">Logout</button>
-        </div>
+  <!-- Employee Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#052e6c;height:80px;position:fixed;z-index:1000;width:100%;">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="/images/whiteLogo.png" alt="Al's Windows logo" class="me-2" style="height:50px;width:auto;object-fit:contain;border-radius:0;">
+      </a>
+
+      <!-- Mobile: you can keep Logout inside the menu or add a d-lg-none button like public -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavEmp"
+              aria-controls="navbarNavEmp" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNavEmp">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link <%= (navPage === 'customers') ? 'active' : '' %>" href="/customerManagement">Customers</a></li>
+          <li class="nav-item"><a class="nav-link <%= (navPage === 'leads') ? 'active' : '' %>" href="/leadManagement">Leads</a></li>
+        </ul>
+        <button type="button" class="btn-logout ms-3 d-none d-lg-inline-block" onclick="window.location.href='/logout'">Logout</button>
       </div>
-    </nav>
+    </div>
+  </nav>
+
   <% } else { %>
-    <!-- Public Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #052e6c; height: 80px; position: fixed; z-index: 1000; width: 100%;">
-      <div class="container">
-        <!-- Logo -->
-        <a class="navbar-brand d-flex align-items-center" href="/"> 
-          <img src="/whiteLogo.png" alt="Al's Windows logo" class="me-2" style="height: 50px; width: auto; object-fit: contain; border-radius: 0;">
-        </a> 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavPub" aria-controls="navbarNavPub" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavPub">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link <%= (navPage === 'home') ? 'active' : '' %>" href="/">Home</a></li>
-            <li class="nav-item"><a class="nav-link <%= (navPage === 'about') ? 'active' : '' %>" href="/aboutUs">About Us</a></li>
-            <li class="nav-item"><a class="nav-link <%= (navPage === 'calculator') ? 'active' : '' %>" href="/calculator">Quote Calculator</a></li>
-          </ul>
-          <a class="btn-quote ms-3" id="navbarQuoteBtn">Get a Quote</a>
-        </div>
+  <!-- Public Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#052e6c;height:80px;position:fixed;z-index:1000;width:100%;">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="/images/whiteLogo.png" alt="Al's Windows logo" class="me-2" style="height:50px;width:auto;object-fit:contain;border-radius:0;">
+      </a>
+
+      <!-- MOBILE: always-visible quote button -->
+      <button class="quote-btn2 d-lg-none ms-auto me-2" id="navbarQuoteBtnSm" type="button">Get a Quote</button>
+
+      <!-- Hamburger -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavPub"
+              aria-controls="navbarNavPub" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Collapsible menu -->
+      <div class="collapse navbar-collapse" id="navbarNavPub">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link <%= (navPage === 'home') ? 'active' : '' %>" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link <%= (navPage === 'about') ? 'active' : '' %>" href="/aboutUs">About Us</a></li>
+          <li class="nav-item"><a class="nav-link <%= (navPage === 'calculator') ? 'active' : '' %>" href="/calculator">Quote Calculator</a></li>
+        </ul>
+        <!-- DESKTOP: keep existing button; hidden on mobile -->
+        <a class="btn-quote ms-3 d-none d-lg-inline-block" id="navbarQuoteBtn">Get a Quote</a>
       </div>
-    </nav>
+    </div>
+  </nav>
   <% } %>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const quoteFormWrapper = document.getElementById('quoteFormWrapper');
+      const closeForm = document.getElementById('closeForm');
+      const btnDesktop = document.getElementById('navbarQuoteBtn');
+      const btnMobile  = document.getElementById('navbarQuoteBtnSm');
+
+      const openQuote = () => quoteFormWrapper?.classList.add('active');
+
+      btnDesktop?.addEventListener('click', openQuote);
+      btnMobile?.addEventListener('click', openQuote);
+      closeForm?.addEventListener('click', () => quoteFormWrapper?.classList.remove('active'));
+    });
+  </script>
 </body>
 </html>
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-            const navbarBtn = document.getElementById('navbarQuoteBtn');
-            const quoteFormWrapper = document.getElementById('quoteFormWrapper');
-            const closeForm = document.getElementById('closeForm');
-
-            navbarBtn?.addEventListener('click', () => {
-            quoteFormWrapper?.classList.add('active');
-            });
-
-            sectionBtn?.addEventListener('click', () => {
-            quoteFormWrapper?.classList.add('active');
-            });
-
-            closeForm?.addEventListener('click', () => {
-            quoteFormWrapper?.classList.remove('active');
-            });
-        });
-</script>
-
