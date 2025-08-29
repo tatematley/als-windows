@@ -13,6 +13,7 @@
     .quote-btn2{
       padding:8px 20px;font-size:1rem;font-weight:600;border-radius:8px;
       background-color:#0047AB;color:#fff;transition:.3s;text-decoration:none;
+      box-shadow:0 4px 12px rgba(0,0,0,.4); border:none;
     }
     .quote-btn2:hover{ background-color:#003b93; transform:scale(1.05); }
 
@@ -20,16 +21,19 @@
       background-color:#0047AB;color:#fff;font-weight:600;font-size:1rem;
       padding:10px 24px;border:none;margin-left:10px;border-radius:8px;
       transition:.3s;text-decoration:none;display:inline-block;
-      box-shadow:0 4px 12px rgba(0,0,0,.4); cursor:default; width:auto!important;
+      box-shadow:0 4px 12px rgba(0,0,0,.4); cursor:pointer; width:auto!important;
     }
     .navbar .btn-logout:hover{ background-color:#003b93; transform:scale(1.05); }
 
     nav{ position:fixed; top:0; width:100%; height:80px; z-index:1000; }
-    body{ margin:0; padding-top:80px; } /* match nav height */
+    body{ margin:0; padding-top:80px; }
 
-    /* ------ Mobile dropdown as right-side panel (desktop unchanged) ------ */
+    /* ------ Mobile-only tweaks (desktop unchanged) ------ */
     @media (max-width: 991.98px){
-      .navbar .container{ position:relative; } /* anchor the panel to the container */
+      .navbar-brand img{ height:40px !important; width:40px !important; }
+      .navbar .container{ position:relative; gap:.5rem; }
+      .navbar-toggler{ padding:.25rem .5rem; margin-left:.25rem; border-color:rgba(255,255,255,.4); }
+
       .navbar-collapse{
         position:absolute; top:80px; right:0; width:250px;
         background-color:#052e6c; padding:1rem; border-radius:0 0 0 8px;
@@ -38,8 +42,13 @@
       .navbar-collapse .nav-link{
         display:block; margin-bottom:.75rem; color:#fff !important; font-size:1.1rem;
       }
-      /* always-visible mobile quote button (tweak size a touch) */
-      .quote-btn2.d-lg-none{ padding:6px 14px; font-size:.95rem; }
+
+      /* mobile buttons sizing */
+      .quote-btn2.d-lg-none,
+      .btn-logout.d-lg-none{
+        padding:6px 12px; font-size:.95rem; border:none !important;
+        box-shadow:0 4px 12px rgba(0,0,0,.4);
+      }
     }
   </style>
 </head>
@@ -53,7 +62,10 @@
         <img src="/images/whiteLogo.png" alt="Al's Windows logo" class="me-2" style="height:50px;width:auto;object-fit:contain;border-radius:0;">
       </a>
 
-      <!-- Mobile: you can keep Logout inside the menu or add a d-lg-none button like public -->
+      <!-- MOBILE: always-visible logout button -->
+      <button class="btn-logout d-lg-none ms-auto me-2" id="navbarLogoutBtnSm" type="button">Logout</button>
+
+      <!-- Hamburger -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavEmp"
               aria-controls="navbarNavEmp" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -64,6 +76,7 @@
           <li class="nav-item"><a class="nav-link <%= (navPage === 'customers') ? 'active' : '' %>" href="/customerManagement">Customers</a></li>
           <li class="nav-item"><a class="nav-link <%= (navPage === 'leads') ? 'active' : '' %>" href="/leadManagement">Leads</a></li>
         </ul>
+        <!-- DESKTOP: logout stays here -->
         <button type="button" class="btn-logout ms-3 d-none d-lg-inline-block" onclick="window.location.href='/logout'">Logout</button>
       </div>
     </div>
@@ -86,14 +99,12 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <!-- Collapsible menu -->
       <div class="collapse navbar-collapse" id="navbarNavPub">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link <%= (navPage === 'home') ? 'active' : '' %>" href="/">Home</a></li>
           <li class="nav-item"><a class="nav-link <%= (navPage === 'about') ? 'active' : '' %>" href="/aboutUs">About Us</a></li>
           <li class="nav-item"><a class="nav-link <%= (navPage === 'calculator') ? 'active' : '' %>" href="/calculator">Quote Calculator</a></li>
         </ul>
-        <!-- DESKTOP: keep existing button; hidden on mobile -->
+        <!-- DESKTOP: quote button stays here -->
         <a class="btn-quote ms-3 d-none d-lg-inline-block" id="navbarQuoteBtn">Get a Quote</a>
       </div>
     </div>
@@ -109,13 +120,19 @@
       const closeForm = document.getElementById('closeForm');
       const btnDesktop = document.getElementById('navbarQuoteBtn');
       const btnMobile  = document.getElementById('navbarQuoteBtnSm');
+      const btnLogoutMobile = document.getElementById('navbarLogoutBtnSm');
 
       const openQuote = () => quoteFormWrapper?.classList.add('active');
-
       btnDesktop?.addEventListener('click', openQuote);
       btnMobile?.addEventListener('click', openQuote);
+
+      btnLogoutMobile?.addEventListener('click', () => {
+        window.location.href='/logout';
+      });
+
       closeForm?.addEventListener('click', () => quoteFormWrapper?.classList.remove('active'));
     });
   </script>
 </body>
 </html>
+
