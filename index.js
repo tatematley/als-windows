@@ -4,11 +4,12 @@ let express = require("express");
 
 let app = express();
 
+
 let path = require("path");
 
 const port = process.env.PORT || 5003;
 
-let security = false;
+// let security = false;
 
 let hiddenSubmit = "hidden";
 
@@ -58,13 +59,52 @@ const knex = require("knex")({
 });
 
 
-// Show the employee navbar ONLY when you're on an employee URL AND security === true
+
+//TEST
+const session = require('express-session');
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'als_session',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { httpOnly: true }
+}));
+
+//TEST
 app.use((req, res, next) => {
-  const onEmployeeUrl = /^\/(customerManagement|leadManagement|editCustomer|addCustomer|editLead|addLead|confirmLead)/.test(req.path);
-  res.locals.isEmployee = (typeof security !== 'undefined' ? security === true : false) && onEmployeeUrl;
+  // Comes from session — will persist per user until logout
+  res.locals.security = !!req.session.security;
+
+  // Optional: only mark "employee sections" if path matches
+  res.locals.isEmployee = /^\/(customerManagement|leadManagement|editCustomer|addCustomer|confirmLead|confirmCustomer)/.test(req.path);
+
   next();
 });
 
+//TEST
+const requireAuth = (req, res, next) =>
+  req.session.security ? next() : res.redirect('/login');
+
+
+// Show the employee navbar ONLY when you're on an employee URL AND security === true
+// app.use((req, res, next) => {
+//   const onEmployeeUrl = /^\/(customerManagement|leadManagement|editCustomer|addCustomer|editLead|addLead|confirmLead)/.test(req.path);
+//   res.locals.isEmployee = (typeof security !== 'undefined' ? security === true : false) && onEmployeeUrl;
+//   next();
+// });
+
+//TEST
+app.set('trust proxy', 1);
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'als_session',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production'
+  }
+}));
 
 
 app.get('/db-ping', async (_, res) => {
@@ -81,22 +121,22 @@ app.get('/db-ping', async (_, res) => {
 
 // get rout for home page
 app.get("/", (req, res) => {
-    res.render("index", { security, navPage: 'home' }); 
+    res.render("index", {  navPage: 'home' }); 
 });
 
 // get route for calculator page
 app.get('/calculator', (req, res) => {
-    res.render('calculator', {security, navPage: 'calculator'});
+    res.render('calculator', { navPage: 'calculator'});
 });
 
 // get route for about us
 app.get('/aboutUs', (req, res) => {
-    res.render('aboutUs', {security, navPage: 'about'});
+    res.render('aboutUs', { navPage: 'about'});
 });
 
 // get route for leads
 app.get('/leads', (req, res) => {
-    res.render('leads', {security, navPage: 'leads'});
+    res.render('leads', { navPage: 'leads'});
 });
 
 
@@ -121,47 +161,84 @@ app.post('/leads', (req, res) => {
 
 // Route to render login.ejs for /login
 app.get('/login', (req, res) => {
-    res.render('login', {security, navPage: 'login'}); // Ensure login.ejs is in the views folder
+    res.render('login', { navPage: 'login'}); // Ensure login.ejs is in the views folder
 });
 
 
+
+// POST /login
 app.post('/login', async (req, res) => {
-    const emp_username = req.body.emp_username;
-    const emp_password = req.body.emp_password;
+  const { emp_username, emp_password } = req.body;
 
-    console.log("Trying login with:", emp_username);
+  try {
+    const user = await knex('login_info')
+      .select('*')
+      .where({ emp_username, emp_password }) // (ok for dev; hash in prod)
+      .first();
 
-    try {
-        // Query the login_info table
-        const user = await knex('login_info')
-            .select('*')
-            .where({ emp_username, emp_password }) // ⚠️ plain-text check, OK for dev
-            .first();
-
-        console.log("DB Result:", user);
-
-        if (user) {
-            security = true;
-            res.redirect("/customerManagement");
-        } else {
-            security = false;
-            res.status(401).send("Invalid username or password");
-        }
-
-    } catch (error) {
-        console.error("Database query failed:", error);
-        res.status(500).send("Database query failed: " + error.message);
+    if (!user) {
+      // bad creds
+      req.session.security = false;
+      return res.status(401).send('Invalid username or password');
     }
+
+    // good creds
+    req.session.security = true;
+    return res.redirect('/customerManagement');
+
+  } catch (err) {
+    console.error('DB error:', err);
+    return res.status(500).send('Database query failed: ' + err.message);
+  }
 });
+
+
+// app.post('/login', async (req, res) => {
+//     const emp_username = req.body.emp_username;
+//     const emp_password = req.body.emp_password;
+
+//     console.log("Trying login with:", emp_username);
+
+//     try {
+//         // Query the login_info table
+//         const user = await knex('login_info')
+//             .select('*')
+//             .where({ emp_username, emp_password }) // ⚠️ plain-text check, OK for dev
+//             .first();
+
+//         console.log("DB Result:", user);
+
+//         if (user) {
+//             security = true;
+//             res.redirect("/customerManagement");
+//         } else {
+//             security = false;
+//             res.status(401).send("Invalid username or password");
+//         }
+
+//     } catch (error) {
+//         console.error("Database query failed:", error);
+//         res.status(500).send("Database query failed: " + error.message);
+//     }
+// });
+
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid'); // optional: explicitly clear cookie
+    res.redirect('/');
+  });
+});
+
+
 
 // get method for logging out
-app.get('/logout', (req, res) => {
-    security = false;  // flip off employee mode
-    res.redirect('/'); // go through your normal home route
-});
+// app.get('/logout', (req, res) => {
+//     security = false;  // flip off employee mode
+//     res.redirect('/'); // go through your normal home route
+// });
 
 // get route to view all customers
-app.get('/customerManagement', async (req, res) => {
+app.get('/customerManagement', requireAuth, async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1; // Default to page 1
         const limit = 15; // Show 15 customers per page
@@ -195,7 +272,7 @@ app.get('/customerManagement', async (req, res) => {
 
 
         // Render the page
-        res.render('customerManagement', { customers, currentPage: page, totalPages, navPage: 'customers', security, hiddenView, hiddenSubmit, noResults: false, query: '' });
+        res.render('customerManagement', { customers, currentPage: page, totalPages, navPage: 'customers', hiddenView, hiddenSubmit, noResults: false, query: '' });
     } catch (error) {
         console.error("Error fetching data:", error);
         res.status(500).send("Error fetching data.");
@@ -204,7 +281,7 @@ app.get('/customerManagement', async (req, res) => {
   
 
 // get route for the /editCustomer action
-app.get('/editCustomer/:id', (req, res) => {
+app.get('/editCustomer/:id', requireAuth, (req, res) => {
     let id = req.params.id;
     // Query the Customer by ID first
     knex('customers')
@@ -219,7 +296,7 @@ app.get('/editCustomer/:id', (req, res) => {
           .select("*")
           .then(customer => {
             // Render the edit form and pass both customer record and customer array
-            res.render('editCustomer', { customerRec, customer, security, navPage: 'customers' });
+            res.render('editCustomer', { customerRec, customer, navPage: 'customers' });
           })
           .catch(error => {
             console.error('Error fetching whole query of customer types:', error);
@@ -233,7 +310,7 @@ app.get('/editCustomer/:id', (req, res) => {
   });
 
 // post route to edit customer
-app.post("/editCustomer/:id", (req,res) =>{
+app.post("/editCustomer/:id", requireAuth, (req,res) =>{
     knex("customers").where("cust_id", parseInt(req.params.id)).update({
         cust_first_name: req.body.cust_first_name,
         cust_last_name: req.body.cust_last_name,
@@ -251,12 +328,12 @@ app.post("/editCustomer/:id", (req,res) =>{
 });
 
 // get route to add customer
-app.get("/addCustomer/", (req, res) => {
-    res.render("addCustomer", { security, navPage: 'customers' });
+app.get("/addCustomer/", requireAuth, (req, res) => {
+    res.render("addCustomer", { navPage: 'customers' });
 });
 
 // post route to add customer
-app.post("/addCustomer", (req,res) => {
+app.post("/addCustomer", requireAuth, (req,res) => {
     knex("customers").insert({
         cust_first_name: req.body.cust_first_name,
         cust_last_name: req.body.cust_last_name,
@@ -275,14 +352,14 @@ app.post("/addCustomer", (req,res) => {
 
 // get route to return back to home page
 app.get("/returnHome/", (req, res) => {
-    res.render("index", { security, navPage: 'home' });
+    res.render("index", { navPage: 'home' });
 });
 
 
 
 
 // post route to delete customer
-app.post("/deleteCustomer/:id", (req,res) => {
+app.post("/deleteCustomer/:id", requireAuth, (req,res) => {
     knex("customers").where("cust_id", req.params.id).del().then(customer =>{
         res.redirect("/customerManagement");
     }).catch(err => {
@@ -292,7 +369,7 @@ app.post("/deleteCustomer/:id", (req,res) => {
 });
 
 // get route to view all leads
-app.get('/leadManagement', async (req, res) => {
+app.get('/leadManagement', requireAuth, async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1; // Default to page 1
         const limit = 15; // Show 15 customers per page
@@ -322,7 +399,7 @@ app.get('/leadManagement', async (req, res) => {
             .offset(offset);
 
         // Render the page
-        res.render('leadManagement', { leads, currentPage: page, totalPages, navPage: 'leads', security, hiddenSubmit, hiddenView, noResults: false, query: ''});
+        res.render('leadManagement', { leads, currentPage: page, totalPages, navPage: 'leads', hiddenSubmit, hiddenView, noResults: false, query: ''});
     } catch (error) {
         console.error("Error fetching data:", error);
         res.status(500).send("Error fetching data.");
@@ -330,13 +407,13 @@ app.get('/leadManagement', async (req, res) => {
 });
 
 // get route to add lead
-app.get("/addLead/", (req, res) => {
-    res.render("addLead", { security, navPage: 'leads' });
+app.get("/addLead/", requireAuth, (req, res) => {
+    res.render("addLead", { navPage: 'leads' });
 });
 
 
 // post route to add lead
-app.post("/addLead", (req,res) => {
+app.post("/addLead", requireAuth, (req,res) => {
     knex("leads").insert({
         lead_first_name: req.body.lead_first_name,
         lead_last_name: req.body.lead_last_name,
@@ -352,7 +429,7 @@ app.post("/addLead", (req,res) => {
     });
 });
 
-app.get('/confirmLead/:id', (req, res) => {
+app.get('/confirmLead/:id', requireAuth, (req, res) => {
     let id = req.params.id;
     // Query the lead by ID first
     knex('leads')
@@ -361,7 +438,7 @@ app.get('/confirmLead/:id', (req, res) => {
       .then(lead => {
     
             // Render the edit form and pass both lead record and lead array
-            res.render('confirmLead', { lead, security, navPage: 'leads' });
+            res.render('confirmLead', { lead, navPage: 'leads' });
           })
           .catch(error => {
             console.error('Error fetching whole query of lead types:', error);
@@ -369,7 +446,7 @@ app.get('/confirmLead/:id', (req, res) => {
           });
       })
 
-      app.post("/confirmLead/:id", (req,res) => {
+      app.post("/confirmLead/:id", requireAuth, (req,res) => {
         const id = req.params.id
         knex('customers')
         .insert({
@@ -387,7 +464,9 @@ app.get('/confirmLead/:id', (req, res) => {
             res.redirect(`/deleteLead/${id}`);
         });
     });
-    app.get('/deleteLead/:id', (req, res) => {
+
+
+    app.get('/deleteLead/:id', requireAuth, (req, res) => {
         const id = req.params.id;
         knex('leads') // Replace 'leads' with the actual table name for your leads
           .where({ 'lead_id': id })
@@ -401,7 +480,7 @@ app.get('/confirmLead/:id', (req, res) => {
           });
       });
 // get route for the /editLead action
-app.get('/editLead/:id', (req, res) => {
+app.get('/editLead/:id', requireAuth, (req, res) => {
     let id = req.params.id;
     // Query the lead by ID first
     knex('leads')
@@ -410,7 +489,7 @@ app.get('/editLead/:id', (req, res) => {
       .then(lead => {
     
             // Render the edit form and pass both lead record and lead array
-            res.render('editLead', { lead, security, navPage: 'leads' });
+            res.render('editLead', { lead, navPage: 'leads' });
           })
           .catch(error => {
             console.error('Error fetching whole query of lead types:', error);
@@ -420,7 +499,7 @@ app.get('/editLead/:id', (req, res) => {
    
 
 // post route to edit lead
-app.post("/editLead/:id", (req,res) => {
+app.post("/editLead/:id", requireAuth, (req,res) => {
     knex("leads").where("lead_id", req.params.id)
     .update({
         lead_first_name: req.body.lead_first_name,
@@ -439,7 +518,7 @@ app.post("/editLead/:id", (req,res) => {
 });
 
 // post route to delete lead
-app.post("/deleteLead/:id", (req,res) => {
+app.post("/deleteLead/:id", requireAuth, (req,res) => {
     knex("leads")
         .where("lead_id", req.params.id)
         .del()
@@ -499,7 +578,6 @@ app.get('/searchLeads', async (req, res) => {
       totalPages,
       query: q,
       noResults,          // so EJS can show "No leads found."
-      security,
       navPage: 'leads',
       hiddenView,
       hiddenSubmit
@@ -540,18 +618,15 @@ app.get('/searchCustomers', async (req, res) => {
     const noResults = customers.length === 0;
 
     return res.render('customerManagement', {
-      customers,
-      currentPage: page,
-      totalPages,
-      query: q,
-      noResults,
-      security,
-      navPage: 'customers',
-      hiddenView,
-      hiddenSubmit,
-      noResults, 
-      query: ''
-    });
+  customers,
+  currentPage: page,
+  totalPages,
+  query: q,          // keep this
+  noResults,
+  navPage: 'customers',
+  hiddenView,
+  hiddenSubmit
+});
   } catch (error) {
     console.error('Error performing search:', error);
     res.status(500).send('An error occurred while searching. Please try again later.');
@@ -564,7 +639,6 @@ app.get('/searchCustomers', async (req, res) => {
 // get route for the submission page
 app.get('/submission', (req, res) =>{
     res.render('submission', {
-        security,
         navPage: 'home'   
     });
 });
