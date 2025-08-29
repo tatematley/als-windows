@@ -7,7 +7,7 @@
     <title>Edit Lead</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
+        .card_container body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
             color: #333;
@@ -25,7 +25,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
+        .card_container h1 {
             font-size: 2rem;
             font-weight: bold !important;
             padding: 0 10px;
@@ -35,7 +35,7 @@
             font-family: 'Montserrat', sans-serif;
         }
 
-        label {
+        .card_container label {
             font-size: 1.1rem;
             display: block;
             font-weight: bold;
@@ -43,10 +43,10 @@
             color: #052e6c;
         }
 
-        input[type="text"],
-        input[type="number"],
-        input[type="tel"],
-        input[type="email"] {
+        .card_container input[type="text"],
+        .card_container input[type="number"],
+        .card_container input[type="tel"],
+        .card_container input[type="email"] {
             width: 100%; /* Ensures inputs fill the container */
             padding: 12px; /* Added padding for larger click area */
             margin-bottom: 20px; /* Increased margin for better visual spacing */
@@ -56,13 +56,13 @@
             box-sizing: border-box; /* Prevents padding from affecting width */
         }
 
-        input:focus {
+        .card_container input:focus {
             outline: none;
             border-color: #052e6c;
             box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
         }
 
-        button {
+        .card_container button {
             background-color: #003b93;
             color: white;
             border: none;
@@ -73,13 +73,13 @@
             transition: background-color 0.3s, transform 0.2s;
         }
 
-        input:focus {
+        .card_container input:focus {
             outline: none;
             border-color: #052e6c;
             box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
         }
 
-        input, select, button {
+        .card_container input, .card_container select, .card_container button {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -89,11 +89,11 @@
             box-sizing: border-box;
         }
 
-        button:hover {
+        .card_container button:hover {
             background-color: #003b93;
         }
 
-         button:active {
+        .card_container button:active {
             background-color: #002b5c;
         }
 
@@ -109,7 +109,7 @@
             margin-bottom: 10px; /* Spacing before the next field */
         }
 
-        select {
+        .card_container select {
             width: 100%;
             padding: 10px;
             padding-right: 35px;              /* space for arrow */
@@ -130,7 +130,7 @@
             background-size: 12px;
         }
 
-        select:focus {
+        .card_container select:focus {
             outline: none;
             border-color: #052e6c;
             box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
