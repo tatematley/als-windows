@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/styles/styles.css">
 
     <style>
-        .emp_container {
+        /* .emp_container {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -54,11 +54,11 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(134, 134, 134, 0.3); /* adjust opacity and color here */
+        background: rgba(134, 134, 134, 0.3);
         z-index: 1;
         }
 
-        /* small screens */
+        
         @media (max-width: 768px) {
         
             .emp_container {
@@ -85,7 +85,77 @@
             .image-overlay-container {
                 height: clamp(220px, 35vh, 320px);
             }
-        }
+        } */
+
+
+        /* Desktop defaults (unchanged look) */
+.emp_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.emp_container .text { padding-left: 20px; }
+
+/* IMPORTANT: scope to employee photos only */
+.emp_container img {
+  width: 350px;
+  height: 350px;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* (optional) your card style */
+.card {
+  padding: 20px;
+  border-radius: 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Hero image block (unchanged) */
+.image-overlay-container {
+  position: relative;
+  width: 100%;
+  height: 290px;
+  overflow: hidden;
+}
+.overlay-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+.overlay {
+  position: absolute; inset: 0;
+  background: rgba(134,134,134,0.3);
+  z-index: 1;
+}
+
+/* Desktop: Alex = text first, photo second */
+.alex .text  { order: 1; }
+.alex .photo { order: 2; }
+
+/* Desktop: Max already photo then text (default order) */
+
+/* Mobile: stack, image first for both */
+@media (max-width: 768px) {
+  .emp_container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    padding: 16px;
+  }
+  .emp_container .text { padding-left: 0; }
+  .emp_container .photo { order: 1; }
+  .emp_container .text  { order: 2; }
+
+  .emp_container img {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    padding-left: 0 !important;
+  }
+
+  .image-overlay-container { height: clamp(220px, 35vh, 320px); }
+}
 
 
     </style>
@@ -158,11 +228,7 @@
             <p class="lead" style="color: #052e6c;">Meet the Team Behind Your Sparkling Windows</p>
             <br>
             <br>
-            <div class="emp_container">
-                <div>
-                    <img src="/images/AlexHeadshot.jpeg" alt="AlexHeadshot">
-                </div>
-                
+            <div class="emp_container alex">
                 <div class="text">
                     <h2 style="text-align: center; color: #052e6c;">Alex Mathis</h2>
                     <h7 style="text-align: center; color:#0047AB; font-style: italic;">Founder & Owner</h7>
@@ -172,14 +238,17 @@
                         I focus on the work in the field, and Max brings in his experience with finance and operations. We’re both committed to doing 
                         things right and making sure every customer feels taken care of.</p>
                 </div>
+                <div class="photo">
+                    <img src="/images/AlexHeadshot.jpeg" alt="AlexHeadshot">
+                </div>
             </div>
             
             <br>
             
             
 
-            <div class="emp_container">
-                <div>
+            <div class="emp_container max">
+                <div class="photo">
                     <img src="/images/SamHeadshot.jpeg" alt="SamHeadshot">
                 </div>
                 
