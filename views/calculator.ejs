@@ -11,37 +11,30 @@
     <style>
 
         .calccardform{
-            max-width: 640px;                  
-            width: min(100% - 2rem, 640px);   
+            max-width: 640px;
+            width: min(100% - 2rem, 640px);
             margin: 48px auto;
+            padding: 24px;                             
+            background: rgba(255,255,255,0.95);         
+            border-radius: 10px;                        
+            box-shadow: 0 6px 16px rgba(0,0,0,.12);    
+            box-sizing: border-box;
         }
 
-
-        /* .calccardform {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.95); 
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-} */
-
-
-
         body {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-    position: relative;
-}
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            position: relative;
+        }
 
-input, select, textarea, button {
-    font-family: inherit;
-    font-size: 1rem;
-}
+        input, select, textarea, button {
+            font-family: inherit;
+            font-size: 1rem;
+        }
 
 
         /* Add a full-size fading overlay */
@@ -126,7 +119,7 @@ input, select, textarea, button {
 
 
   .calcLegend{
-    font-size: clamp(1.6rem, 4.5vw, 2rem);
+    font-size: clamp(1.6rem, 4.5vw, 2rem) !important;
   }
 
 
@@ -215,9 +208,9 @@ input, select, textarea, button {
     <br>
     <br>
     <br>
-    <div class="calccardform" style="margin: auto; color: #052e6c;">
+    <div class="calccardform" style="color: #052e6c;">
         <fieldset id="cleaningForm" onsubmit="return validateForm()" style="text-align: center;">
-            <legend class="calcLegend" style="color: #052e6c; font-family: 'Montserrat', sans-serif; font-size: 2.5rem;">Quote Calculator</legend>
+            <legend class="calcLegend" style="color: #052e6c; font-family: 'Montserrat', sans-serif;">Quote Calculator</legend>
 <br>
             <p style="font-style: italic; font-size: .75rem;; margin-bottom: 2px;">*Disclaimer: Only an estimate, not a final quote.</p>
             <p style="font-style: italic; font-size: .75rem;; margin-top: 2px;">Only quotes above $100.00 are accepted.</p>
